@@ -18,9 +18,9 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-btn-25">
-                        <a href="" class="btn btn-outline for-link-all">
+                        <router-link :to="{name : 'shop'}" class="btn btn-outline for-link-all">
                             <i class="fas fa-eye"></i><span>مشاهده همه محصولات کوکو</span>
-                        </a>
+                        </router-link>
                     </div>
                 </div>
             </div>

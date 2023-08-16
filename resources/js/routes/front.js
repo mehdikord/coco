@@ -47,10 +47,14 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    // trying to access a restricted page + not logged in
-    // redirect to login page
+
 
     next();
+
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+    }, 1);
+
 
 });
 
