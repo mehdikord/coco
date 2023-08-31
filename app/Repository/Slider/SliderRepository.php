@@ -52,5 +52,10 @@ class SliderRepository implements SliderInterface
         return response_success(true,'item deleted success');
     }
 
+    public function front_index()
+    {
+        return response_success(Slider::where('is_active',true)->get());
+    }
+
 
 }

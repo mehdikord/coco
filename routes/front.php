@@ -10,4 +10,6 @@ use Illuminate\Support\Facades\Route;
 | all Front routes is here
 |
 */
+Route::get('slider',[\App\Http\Controllers\Front\SliderController::class,'index']);
+
 

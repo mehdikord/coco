@@ -70,13 +70,32 @@
 </style>
 <script>
 import {defineComponent} from 'vue'
+import {mapActions} from "vuex";
 
 export default defineComponent({
     name: "Front_Index_Slider_Top",
+    mounted() {
+      this.GetItems();
+    },
+
     data(){
         return{
+            items:[],
             slide:'first',
             autoplay:true
+        }
+    },
+
+    methods:{
+        ...mapActions([
+            'SliderIndex',
+        ]),
+        GetItems(){
+            this.SliderIndex().then(res =>{
+                this.items = res.data.result;
+            }).catch(error =>{
+                return this.NotifyServerError();
+            })
         }
     }
 })

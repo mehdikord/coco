@@ -9,7 +9,7 @@ import quasarLang from 'quasar/lang/fa-IR'
 import '@quasar/extras/roboto-font/roboto-font.css';
 import '@quasar/extras/fontawesome-v6/fontawesome-v6.css';
 import { useQuasar } from 'quasar'
-// ..required because of selected iconSet:
+// required because of selected iconSet:
 import '@quasar/extras/mdi-v7/mdi-v7.css';
 // Import Quasar css
 import 'quasar/dist/quasar.css';

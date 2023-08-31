@@ -13,6 +13,8 @@ interface  SliderInterface
 
     public function delete($item);
 
+    public function front_index();
+
 
 
 
