@@ -5,21 +5,20 @@
                 <div class="col-lg-8 mb-3">
                     <div class="">
                         <q-carousel
+                            v-show="items.length"
                             class="for-slider rounded"
                             arrows
                             animated
                             v-model="slide"
 
                         >
-                            <q-carousel-slide name="first" img-src="https://cafesupport.ir/blog/wp-content/uploads/2022/05/cup-coffee-with-pile-coffee-beans_1112-438.jpg">
-
+                            <q-carousel-slide
+                                v-for="item in items"
+                                :name="item.id"
+                                :img-src="item.image"
+                            >
                             </q-carousel-slide>
-                            <q-carousel-slide name="second" img-src="https://caffejoo.ir/wp-content/uploads/2023/05/%D9%82%D9%87%D9%88%D9%87-%D8%AA%D8%A7%D9%85-%DA%A9%DB%8C%D9%86%D8%B2.webp">
 
-                            </q-carousel-slide>
-                            <q-carousel-slide name="third" img-src="https://cdn.quasar.dev/img/parallax2.jpg">
-
-                            </q-carousel-slide>
                         </q-carousel>
                     </div>
 
@@ -75,13 +74,15 @@ import {mapActions} from "vuex";
 export default defineComponent({
     name: "Front_Index_Slider_Top",
     mounted() {
+
       this.GetItems();
+
     },
 
     data(){
         return{
             items:[],
-            slide:'first',
+            slide:null,
             autoplay:true
         }
     },
@@ -93,6 +94,9 @@ export default defineComponent({
         GetItems(){
             this.SliderIndex().then(res =>{
                 this.items = res.data.result;
+                if (this.items.length){
+                    this.slide =this.items[0].id
+                }
             }).catch(error =>{
                 return this.NotifyServerError();
             })

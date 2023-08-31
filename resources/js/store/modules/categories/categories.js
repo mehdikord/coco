@@ -92,6 +92,15 @@ export default {
                 })
             } )
         },
+        CategoriesFrontIndex(){
+            return new Promise((resolve,reject) => {
+                axios.get('categories').then((result) => {
+                    resolve(result);
+                }).catch(error => {
+                    reject(error);
+                })
+            } )
+        }
 
     }
 

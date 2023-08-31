@@ -67,5 +67,10 @@ class CategoriesRepository implements CategoriesInterface
         return response_success(true,'item deleted success');
     }
 
+    public function front_index()
+    {
+        return response_success(Category::whereNull('parent_id')->with('children')->get());
+    }
+
 
 }

@@ -9,6 +9,8 @@ import Manage_Brands from "../manage/pages/brands/Manage_Brands.vue";
 import Manage_Categories from "../manage/pages/categories/Manage_Categories.vue";
 import Manage_Products from "../manage/pages/products/Manage_Products.vue";
 import Manage_Slider from "../manage/pages/slider/Manage_Slider.vue";
+import axios from 'axios';
+
 
 const routes = [
 
@@ -80,6 +82,7 @@ router.beforeEach((to, from, next) => {
     // trying to access a restricted page + not logged in
     // redirect to login page
 
+    axios.defaults.baseURL="/api/manage"
 
     if (to.path !== '/management/login' && !store.getters.AuthManageCheck) {
         next('/management/login');
