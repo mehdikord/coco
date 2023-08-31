@@ -8,6 +8,7 @@ use App\Http\Requests\Products\ProductsUpdateRequest;
 use App\Http\Requests\Single\SingleImageUpdateRequest;
 use App\Interfaces\Products\ProductsInterface;
 use App\Models\Product;
+use App\Models\Product_Image;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -50,5 +51,11 @@ class ProductController extends Controller
     public function images_store(Product $product,SingleImageUpdateRequest $request)
     {
         return $this->repository->images_store($product,$request);
+    }
+
+    public function images_delete(Product_Image $image)
+    {
+        return $this->repository->images_delete($image);
+
     }
 }

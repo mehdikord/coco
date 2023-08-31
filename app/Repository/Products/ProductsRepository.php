@@ -93,5 +93,12 @@ class ProductsRepository implements ProductsInterface
         return response_custom_error('no image');
     }
 
+    public function images_delete($item)
+    {
+        $item->delete();
+        return response_success(true,'item deleted success');
+
+    }
+
 
 }

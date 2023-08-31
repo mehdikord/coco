@@ -565,7 +565,7 @@
                                         <div v-for="image in props.row.images" class="col-md-2 text-center">
                                             <q-img class="shadow" :src="image.image">
                                                 <div class="absolute-bottom-right images-captions">
-                                                    <q-icon name="mdi-delete" color="red-13" size="sm"></q-icon>
+                                                    <q-icon name="mdi-delete" @click="DeleteImage(image,props.row)" color="red-13" size="sm"></q-icon>
                                                 </div>
                                             </q-img>
                                         </div>
@@ -733,7 +733,9 @@ export default {
             "ProductsImagesStore",
             "ProductsChangeActive",
             "CategoriesSelectWithParent",
-            "BrandsSelect"
+            "BrandsSelect",
+            "ProductsImagesDelete",
+
 
         ]),
 
@@ -799,6 +801,35 @@ export default {
                 this.ProductsDelete(id).then(res => {
                     this.items = this.items.filter(item =>{
                         return item.id !== id;
+                    })
+                    return this.NotifyDelete();
+                }).catch(error => {
+                    return  this.NotifyServerError();
+                })
+
+            }).onCancel(() => {
+                // console.log('>>>> Cancel')
+            }).onDismiss(() => {
+                // console.log('I am triggered on both OK and Cancel')
+            })
+        },
+        DeleteImage (item,product) {
+            this.$q.dialog({
+                title: 'هشدار !',
+                message: 'آیا مطمئن هستید آیتم مورد نظر حذف شود ؟',
+                ok: {
+                    push: true,
+                    color:'green-9',
+                },
+                cancel: {
+                    push: true,
+                    color: 'negative'
+                },
+                persistent: true
+            }).onOk(() => {
+                this.ProductsImagesDelete(item).then(res => {
+                    product.images = product.images.filter(getitem =>{
+                        return getitem.id !== item.id;
                     })
                     return this.NotifyDelete();
                 }).catch(error => {

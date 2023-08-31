@@ -5,7 +5,7 @@
 
             <template v-if="item.subs.length">
 
-                <q-expansion-item :content-inset-level="0.3" expand-separator :icon="item.icon" :label="item.title">
+                <q-expansion-item :content-inset-level="0.3" expand-separator :icon="item.icon + ' text-indigo'" :label="item.title" >
 
 
                     <q-item v-for="sub in item.subs" clickable v-ripple :to="{name : sub.link}">
@@ -97,6 +97,14 @@ export default {
                             link : "products",
                             icon  : "mdi-package",
                         },
+
+                    ]
+                },
+                {
+                    title : "تنظیمات اسلایدر",
+                    link : "slider",
+                    icon  : "mdi-image",
+                    subs:[
 
                     ]
                 },

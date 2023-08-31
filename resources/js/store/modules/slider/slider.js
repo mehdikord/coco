@@ -5,74 +5,60 @@ export default {
     state : {},
     mutations: {},
     actions:{
-        ProductsIndex(){
+        SliderIndex(){
             return new Promise((resolve,reject) => {
-                axios.get('products').then((result) => {
+                axios.get('slider').then((result) => {
                     resolve(result);
                 }).catch(error => {
                     reject(error);
                 })
             } )
         },
-        ProductsStore(_,item){
+        SliderStore(_,item){
             return new Promise((resolve,reject) => {
-                axios.post('products',item).then((result) => {
+                var data = new  FormData();
+                if (item.title){data.append('title',item.title)};
+                if (item.image){data.append('image',item.image,item.image.name)};
+                if (item.link){data.append('link',item.link)};
+                axios.post('slider',data,{headers: {'Content-Type': 'multipart/form-data'}}).then((result) => {
                     resolve(result);
                 }).catch(error => {
                     reject(error);
                 })
             } )
         },
-        ProductsEdit(_,item){
+        SliderEdit(_,item){
             return new Promise((resolve,reject) => {
-                axios.post('products/'+item.id,item).then((result) => {
+                axios.post('slider/'+item.id,item).then((result) => {
                     resolve(result);
                 }).catch(error => {
                     reject(error);
                 })
             } )
         },
-        ProductsDelete(_,item){
+        SliderDelete(_,item){
             return new Promise((resolve,reject) => {
-                axios.delete('products/'+item).then((result) => {
+                axios.delete('slider/'+item).then((result) => {
                     resolve(result);
                 }).catch(error => {
                     reject(error);
                 })
             } )
         },
-        ProductsChangeActive(_,item){
+        SliderDeleteImage(_,item){
             return new Promise((resolve,reject) => {
-                axios.get('products/activation/'+item).then((result) => {
+                axios.post('slider/image/'+item).then((result) => {
                     resolve(result);
                 }).catch(error => {
                     reject(error);
                 })
             } )
         },
-        ProductsImagesIndex(_,item){
-            return new Promise((resolve,reject) => {
-                axios.get('products/'+item+'/images').then((result) => {
-                    resolve(result);
-                }).catch(error => {
-                    reject(error);
-                })
-            } )
-        },
-        ProductsImagesStore(_,item){
+        SliderEditImage(_,item){
             return new Promise((resolve,reject) => {
                 var data = new  FormData();
                 if (item.image){data.append('image',item.image,item.image.name)};
-                axios.post('products/'+item.id+"/images",data,{headers: {'Content-Type': 'multipart/form-data'}}).then((result) => {
-                    resolve(result);
-                }).catch(error => {
-                    reject(error);
-                })
-            } )
-        },
-        ProductsImagesDelete(_,item){
-            return new Promise((resolve,reject) => {
-                axios.delete('products/images/'+item.id).then((result) => {
+                axios.post('slider/image/'+item.id,data,{headers: {'Content-Type': 'multipart/form-data'}}).then((result) => {
                     resolve(result);
                 }).catch(error => {
                     reject(error);

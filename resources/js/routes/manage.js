@@ -8,6 +8,7 @@ import Manage_Faqs from "@/manage/pages/faqs/Manage_Faqs.vue";
 import Manage_Brands from "../manage/pages/brands/Manage_Brands.vue";
 import Manage_Categories from "../manage/pages/categories/Manage_Categories.vue";
 import Manage_Products from "../manage/pages/products/Manage_Products.vue";
+import Manage_Slider from "../manage/pages/slider/Manage_Slider.vue";
 
 const routes = [
 
@@ -53,10 +54,12 @@ const routes = [
         component : Manage_Users_Members,
         meta : { title : "مشتریان فروشگاه"}
     },
-
-
-
-
+    {
+        path : "/management/slider",
+        name : "slider",
+        component : Manage_Slider,
+        meta : { title : " تنظیمات اسلایدر"}
+    },
     {
         path : "/management/faqs",
         name : "faqs",

@@ -28,6 +28,7 @@ class BrandController extends Controller
     {
         return $this->repository->store($request);
     }
+
     public function update(Brand $brand,BrandsUpdateRequest $request)
     {
         return $this->repository->update($request,$brand);

@@ -5,6 +5,7 @@ import faqs from "./modules/faqs/faqs";
 import brands from "./modules/brands/brands";
 import categories from "./modules/categories/categories";
 import products from "./modules/products/products"
+import slider from "./modules/slider/slider"
 const store = createStore({
     state(){
         return {
@@ -19,7 +20,8 @@ const store = createStore({
         faqs,
         brands,
         categories,
-        products
+        products,
+        slider
 
     },
 
