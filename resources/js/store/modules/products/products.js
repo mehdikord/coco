@@ -80,6 +80,10 @@ export default {
             } )
         },
 
+        ProductsFront(){
+
+        }
+
 
     }
 

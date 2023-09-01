@@ -18,3 +18,10 @@ Route::prefix('categories')->group(function (){
 
 });
 
+Route::prefix('products')->group(function (){
+
+Route::get('',[\App\Http\Controllers\Front\ProductController::class,'index']);
+
+
+});
+

@@ -20,5 +20,7 @@ interface ProductsInterface
 
     public function images_delete($item);
 
+    public function front_index();
+
 
 }

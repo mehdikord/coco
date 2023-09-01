@@ -9,6 +9,27 @@ use App\Services\MediaServices\MediaService;
 
 class ProductsRepository implements ProductsInterface
 {
+    protected $limit;
+    protected $sort_by;
+    protected $sort_type;
+
+    public function __construct()
+    {
+        $this->limit=15;
+        $this->sort_type='ASC';
+        $this->sort_by="id";
+        if (request()->filled('limit')){
+            $this->limit = request()->limit;
+        }
+        if (request()->filled('sort_by')){
+            $this->sort_by = request()->sort_by;
+        }
+        if (request()->filled('sort_type')){
+            $this->sort_type = request()->sort_type;
+        }
+
+    }
+
     public function index()
     {
         $data = Product::query();
@@ -98,6 +119,28 @@ class ProductsRepository implements ProductsInterface
         $item->delete();
         return response_success(true,'item deleted success');
 
+    }
+
+    public function front_index()
+    {
+        $data = Product::query();
+        $data->where('is_active',true);
+        $data->select([
+            'id',
+            'category_id',
+            'brand_id',
+            'name',
+            'short_description',
+            'price',
+            'sale',
+            'quantity',
+            'views',
+            'sells',
+            'commenting',
+            'rate'
+        ]);
+
+        return response_success($data->orderBy($this->sort_by,$this->sort_type)->paginate($this->limit));
     }
 
 

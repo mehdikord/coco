@@ -246,7 +246,8 @@
                 </template>
                 <template v-slot:body-cell-image="props">
                     <q-td :props="props">
-                        image
+                        <Global_Show_Image :image="props.row.image"></Global_Show_Image>
+
                     </q-td>
                 </template>
                 <template v-slot:body-cell-category="props">
