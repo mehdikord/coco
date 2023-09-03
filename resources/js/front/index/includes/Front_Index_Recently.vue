@@ -10,9 +10,10 @@
                 </div>
             </div>
             <div class="row justify-center">
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1" v-for="i in 6">
-                    <product_single_one></product_single_one>
+                <div v-if="loading" class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1" v-for="i in 6">
+                    <skeleton_product></skeleton_product>
                 </div>
+
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -45,12 +46,34 @@
 </style>
 <script>
 import {defineComponent} from 'vue'
+import {mapActions} from "vuex";
 import Front_Product_Single_One from "../../products/Front_Product_Single_One.vue";
+import Front_Skeleton_Product_Single_One from "../../skeletons/Front_Skeleton_Product_Single_One.vue";
 
 export default defineComponent({
     name: "Front_Index_Recently",
     components : {
         'product_single_one' : Front_Product_Single_One,
+        'skeleton_product':Front_Skeleton_Product_Single_One,
+    },
+    data(){
+      return{
+          items:[],
+          loading:true,
+      }
+    },
+    methods :{
+        ...mapActions([
+            "ProductsFront",
+        ]),
+
+        GetItems(){
+
+
+
+        }
+
+
     }
 })
 </script>
