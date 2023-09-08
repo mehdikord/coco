@@ -1,3 +1,18 @@
+<script>
+import {defineComponent} from 'vue'
+
+export default defineComponent({
+    name: "Front_Product_Single_One",
+    props:['product'],
+    data(){
+        return{
+
+        }
+    }
+})
+</script>
+
+
 <template>
     <div class="product-card">
         <div class="product-media text-center">
@@ -86,11 +101,3 @@
     }
 }
 </style>
-<script>
-import {defineComponent} from 'vue'
-
-export default defineComponent({
-    name: "Front_Product_Single_One"
-})
-</script>
-

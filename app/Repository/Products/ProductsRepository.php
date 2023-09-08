@@ -9,17 +9,18 @@ use App\Services\MediaServices\MediaService;
 
 class ProductsRepository implements ProductsInterface
 {
+    protected $per_page;
     protected $limit;
     protected $sort_by;
     protected $sort_type;
 
     public function __construct()
     {
-        $this->limit=15;
+        $this->per_page=15;
         $this->sort_type='ASC';
         $this->sort_by="id";
-        if (request()->filled('limit')){
-            $this->limit = request()->limit;
+        if (request()->filled('per_page')){
+            $this->per_page = request()->per_page;
         }
         if (request()->filled('sort_by')){
             $this->sort_by = request()->sort_by;
@@ -140,7 +141,7 @@ class ProductsRepository implements ProductsInterface
             'rate'
         ]);
 
-        return response_success($data->orderBy($this->sort_by,$this->sort_type)->paginate($this->limit));
+        return response_success($data->orderBy($this->sort_by,$this->sort_type)->paginate($this->per_page));
     }
 
 

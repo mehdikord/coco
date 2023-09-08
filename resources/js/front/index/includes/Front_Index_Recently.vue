@@ -10,9 +10,14 @@
                 </div>
             </div>
             <div class="row justify-center">
+
                 <div v-if="loading" class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1" v-for="i in 6">
                     <skeleton_product></skeleton_product>
                 </div>
+                <div v-else class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1" v-for="item in items">
+                    <product_single_one></product_single_one>
+                </div>
+
 
             </div>
             <div class="row">
@@ -56,6 +61,9 @@ export default defineComponent({
         'product_single_one' : Front_Product_Single_One,
         'skeleton_product':Front_Skeleton_Product_Single_One,
     },
+    mounted() {
+      this.GetItems();
+    },
     data(){
       return{
           items:[],
@@ -68,8 +76,19 @@ export default defineComponent({
         ]),
 
         GetItems(){
+            let params = {
+                per_page:6,
+                sort_by:'rate',
+                sort_type:'DESC',
+            }
+            this.ProductsFront(params).then(res => {
+                this.loading=false;
+                this.items = res.data.result.data;
+            }).catch(error => {
+                this.loading=false;
+                this.NotifyServerError();
 
-
+            })
 
         }
 
