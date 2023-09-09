@@ -8,7 +8,7 @@ import quasarIconSet from 'quasar/icon-set/mdi-v7';
 import quasarLang from 'quasar/lang/fa-IR'
 import 'quasar/dist/quasar.css';
 import Helper from "./helpers/Helper";
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 
 const App=createApp(Front_Template);
 App.use(Quasar, {
@@ -39,8 +39,10 @@ window.Helper = Helper
 App.mixin({
     beforeCreate() {
         this.$store.commit('AuthManageSync');
+        this.$store.commit('CartGetFromStorage');
     },
     created() {
+
         axios.defaults.headers.common['Authorization'] ="Bearer "+this.AuthToken
 
     },
@@ -98,11 +100,22 @@ App.mixin({
             return Helper.HelperValidationCheck(errors,field);
 
         },
+        CartAdd(product,quantity=1){
+            let item = {quantity : quantity , product : product}
+            this.$store.commit("AddToCart",item);
+        },
+        CartCheck(item){
+            return this.CartCheckProduct(item)
+        }
+
     },
     computed : {
         ...mapGetters({
-            AuthToken : "AuthManageUser",
-        })
+            AuthToken: "AuthManageUser",
+            CartCheckProduct : "CartCheckProduct"
+        }),
+
+
     }
 
 

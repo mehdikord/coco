@@ -12,6 +12,7 @@ class Product extends Model
 {
     use HasFactory,SoftDeletes;
     protected $table='products';
+    protected $appends=['image'];
     protected $guarded=[];
 
     public function category(): BelongsTo
@@ -41,4 +42,9 @@ class Product extends Model
     {
         return $this->hasMany(Order::class,'product_id');
     }
+    public function getImageAttribute($value)
+    {
+        return $this->images()->first();
+    }
+
 }

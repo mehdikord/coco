@@ -4,8 +4,9 @@ import members from "./modules/users/members";
 import faqs from "./modules/faqs/faqs";
 import brands from "./modules/brands/brands";
 import categories from "./modules/categories/categories";
-import products from "./modules/products/products"
-import slider from "./modules/slider/slider"
+import products from "./modules/products/products";
+import slider from "./modules/slider/slider";
+import cart from "./modules/cart/cart";
 const store = createStore({
     state(){
         return {
@@ -22,6 +23,7 @@ const store = createStore({
         categories,
         products,
         slider,
+        cart,
 
     },
 

@@ -1,8 +1,12 @@
 <script>
 import {defineComponent} from 'vue'
+import Front_Skeleton_Product_Single_One from "../skeletons/Front_Skeleton_Product_Single_One.vue";
 
 export default defineComponent({
     name: "Front_Product_Single_One",
+    components:{
+        'skeleton_product':Front_Skeleton_Product_Single_One,
+    },
     props:['product'],
     data(){
         return{
@@ -14,7 +18,7 @@ export default defineComponent({
 
 
 <template>
-    <div class="product-card">
+    <div v-if="product" class="product-card">
         <div class="product-media text-center">
             <div class="product-label">
                 <label class="label-text new">جدید</label>
@@ -22,14 +26,14 @@ export default defineComponent({
             <button class="product-wish wish">
                 <i class="fas fa-heart"></i>
             </button>
-            <a class="product-image " href="product-video.html">
-                <img src="https://tamkins.com/wp-content/uploads/2022/11/Layer-30-1200x1200.png" alt="product">
+            <a class="product-image " >
+                <img v-if="product.image.image" :src="product.image.image" alt="product" />
             </a>
 
         </div>
         <div class="product-content">
             <h6 class="product-name">
-                قهوه 70 - 30
+                {{product.name}}
             </h6>
             <div class="product-rating">
                 <i class="active icofont-star"></i>
@@ -39,22 +43,23 @@ export default defineComponent({
                 <i class="icofont-star"></i>
             </div>
             <h6 class="product-price mt-2">
-                <span>150,000<small></small></span>
+                <span>{{this.$filters.numbers(product.price)}}<small></small></span>
             </h6>
-            <button class="product-add pt-2 pb-2" title="افزودن این محصول به سبد خرید">
+            <button v-if="!this.CartCheck(product.id)" @click="this.CartAdd(product,1)" class="product-add pt-2 pb-2" title="افزودن این محصول به سبد خرید">
                 <span>افزودن به سبد</span>
                 <i class="fas fa-shopping-basket me-2"></i>
             </button>
-            <div class="product-action">
-                <button class="action-minus" title="Quantity Minus">
+            <div v-show="false" class="product-action">
+                <button title="Quantity Minus">
                     <i class="icofont-minus">
                     </i>
                 </button>
-                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
-                <button class="action-plus" title="Quantity Plus"><i class="icofont-plus"></i></button>
+                <input  title="Quantity Number" type="text" name="quantity" value="1">
+                <button title="Quantity Plus"><i class="icofont-plus"></i></button>
             </div>
         </div>
     </div>
+    <skeleton_product v-else></skeleton_product>
 </template>
 
 <style scoped>
@@ -73,6 +78,10 @@ export default defineComponent({
 .product-add{
     font-size: 14px;
 }
+.product-action{
+    display: flex;
+}
+
 @media only screen and (max-width: 600px) {
     .product-image img {
         width: 125px;

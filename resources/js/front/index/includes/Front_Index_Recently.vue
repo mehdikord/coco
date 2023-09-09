@@ -14,8 +14,8 @@
                 <div v-if="loading" class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1" v-for="i in 6">
                     <skeleton_product></skeleton_product>
                 </div>
-                <div v-else class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1" v-for="item in items">
-                    <product_single_one></product_single_one>
+                <div  class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1" v-for="item in items">
+                    <product_single_one :product="item"></product_single_one>
                 </div>
 
 
