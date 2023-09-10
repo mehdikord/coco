@@ -21,3 +21,13 @@
 .pointer{
     cursor: pointer!important;
 }
+.cursor-not-allowed{
+    cursor: not-allowed;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-clear-button {
+    display: none !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+}

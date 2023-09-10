@@ -126,6 +126,7 @@ class ProductsRepository implements ProductsInterface
     {
         $data = Product::query();
         $data->where('is_active',true);
+        $data->with('category');
         $data->select([
             'id',
             'category_id',

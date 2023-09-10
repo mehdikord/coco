@@ -9,10 +9,11 @@
                 <i class="icofont-close text-danger"></i>
             </button>
         </div>
-        <ul class="cart-list">
+        <cart_empty v-if="this.CartTotalProducts < 1"></cart_empty>
+        <ul v-else class="cart-list">
 
-            <li v-for="i in 4" class="cart-item">
-                <cart_single_one></cart_single_one>
+            <li v-for="item in this.CartItemGet" class="cart-item">
+                <cart_single_one :product="item"></cart_single_one>
             </li>
 
         </ul>
@@ -24,7 +25,7 @@
                     <span>ثبت کد</span>
                 </button>
             </form>
-            <a class="cart-checkout-btn" href="">
+            <a class="cart-checkout-btn pointer" :class="{'bg-dark cursor-not-allowed' : this.CartTotalProducts < 1}" >
                 <span class="checkout-label">ثبت نهایی سفارشات</span>
                 <span class="checkout-price">{{this.$filters.numbers(this.CartTotalPrice) }} </span><span class="checkout-price font-14">تومان</span>
 
@@ -50,11 +51,13 @@
 <script>
 import {defineComponent} from 'vue'
 import Front_Cart_Single_One from "../../cart/Front_Cart_Single_One.vue";
+import Front_Cart_Empty from "@/front/cart/Front_Cart_Empty.vue";
 
 export default defineComponent({
     name: "Front_Template_Header_Cart",
     components :{
         'cart_single_one' : Front_Cart_Single_One,
+        'cart_empty' : Front_Cart_Empty,
     }
 })
 </script>
