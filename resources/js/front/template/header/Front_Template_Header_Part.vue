@@ -28,7 +28,14 @@
                     <a href="" class="header-widget" title="علاقه مندی ها"><i class="fas fa-heart"></i><sup>0</sup>
                     </a>
                     <button class="header-widget header-cart" title="سبد خرید">
-                        <i class="fas fa-shopping-basket"></i><sup>9+</sup><span>مجموع سبد خرید<small>345.00</small></span>
+                        <i class="fas fa-shopping-basket"></i>
+                        <sup>{{this.CartItemCount}}</sup>
+                        <span>
+                            مجموع سبد خرید
+                            <small class="text-danger">
+                                {{this.$filters.numbers(this.CartTotalPrice) }}
+                            </small>
+                        </span>
                     </button>
                 </div>
             </div>

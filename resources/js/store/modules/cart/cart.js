@@ -30,6 +30,25 @@ export default {
             state.Cart.splice(index,1);
             localStorage.setItem('coco_cart',JSON.stringify(state.Cart))
         },
+        ReduceFromCart(state,id){
+            let remove=false;
+            state.Cart.forEach(cart => {
+                if (cart.product.id === id){
+                    let new_quantity = cart.quantity - 1;
+                    if (new_quantity < 1){
+                        remove = true;
+                    }
+                    cart.quantity = new_quantity;
+                }
+
+            })
+            if (remove){
+                state.Cart = state.Cart.filter(item => {
+                    return item.product.id !== id
+                })
+            }
+            localStorage.setItem('coco_cart',JSON.stringify(state.Cart))
+        },
         SetEmpty(state){
             state.Cart=[];
             localStorage.removeItem('coco_cart');
@@ -41,7 +60,6 @@ export default {
 
             }
         },
-
 
     },
     getters:{
@@ -66,13 +84,30 @@ export default {
             })
             return total;
         },
-        CartProductsIds : (state) => {
-
+        CartProductCheck : (state) => (id) =>{
+            let check = false;
+            state.Cart.forEach(cart => {
+                if (cart.product.id === id){
+                    check=true;
+                }
+            })
+            return check;
         },
+        CartProductQuantity : (state) => (id) =>{
+            let quantity = 0;
+            state.Cart.forEach(cart => {
+                if (cart.product.id === id){
+                   quantity = cart.quantity;
+                }
+            })
+            return quantity;
+        }
 
     },
     actions:{
 
     }
+
+
 
 }

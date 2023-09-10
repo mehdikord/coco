@@ -103,16 +103,25 @@ App.mixin({
         CartAdd(product,quantity=1){
             let item = {quantity : quantity , product : product}
             this.$store.commit("AddToCart",item);
+            this.NotifySuccess('به سبد اضافه شد');
         },
-        CartCheck(item){
-            return this.CartCheckProduct(item)
+        CartReduce(id){
+            this.$store.commit("ReduceFromCart",id);
+            this.NotifySuccess('از سبد حذف شد');
+
         }
+
 
     },
     computed : {
         ...mapGetters({
             AuthToken: "AuthManageUser",
-            CartCheckProduct : "CartCheckProduct"
+            CartProductCheck : "CartProductCheck",
+            CartProductQuantity : "CartProductQuantity",
+            CartItemCount : "CartItemCount",
+            CartTotalPrice : "CartTotalPrice",
+            CartTotalProducts : "CartTotalProducts",
+            CartItemGet : "CartItemGet"
         }),
 
 

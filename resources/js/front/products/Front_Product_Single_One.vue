@@ -19,12 +19,13 @@ export default defineComponent({
 
 <template>
     <div v-if="product" class="product-card">
+
         <div class="product-media text-center">
             <div class="product-label">
-                <label class="label-text new">جدید</label>
+<!--                <label class="label-text new">جدید</label>-->
             </div>
             <button class="product-wish wish">
-                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart font-20"></i>
             </button>
             <a class="product-image " >
                 <img v-if="product.image.image" :src="product.image.image" alt="product" />
@@ -45,17 +46,17 @@ export default defineComponent({
             <h6 class="product-price mt-2">
                 <span>{{this.$filters.numbers(product.price)}}<small></small></span>
             </h6>
-            <button v-if="!this.CartCheck(product.id)" @click="this.CartAdd(product,1)" class="product-add pt-2 pb-2" title="افزودن این محصول به سبد خرید">
+            <button v-if="!this.CartProductCheck(product.id)" @click="this.CartAdd(product,1)" class="product-add pt-2 pb-2" title="افزودن این محصول به سبد خرید">
                 <span>افزودن به سبد</span>
                 <i class="fas fa-shopping-basket me-2"></i>
             </button>
-            <div v-show="false" class="product-action">
-                <button title="Quantity Minus">
+            <div v-else class="product-action">
+                <button @click="this.CartReduce(product.id)" title="کم کردن تعداد">
                     <i class="icofont-minus">
                     </i>
                 </button>
-                <input  title="Quantity Number" type="text" name="quantity" value="1">
-                <button title="Quantity Plus"><i class="icofont-plus"></i></button>
+                <input  title="افزودن تعداد" type="number" :value="this.CartProductQuantity(product.id)">
+                <button @click="this.CartAdd(product,1)" title="Quantity Plus"><i class="icofont-plus"></i></button>
             </div>
         </div>
     </div>
@@ -63,6 +64,13 @@ export default defineComponent({
 </template>
 
 <style scoped>
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
+    appearance: none;
+}
 .product-image img {
     width: 185px;
 }

@@ -3,7 +3,7 @@
         <div class="cart-header">
             <div class="cart-total">
                 <i class="fas fa-shopping-basket"></i>
-                <span class="me-2">محصولات در سبد خرید (5)</span>
+                <span class="me-2">محصولات در سبد خرید ( {{this.CartTotalProducts}} )</span>
             </div>
             <button class="cart-close">
                 <i class="icofont-close text-danger"></i>
@@ -24,9 +24,10 @@
                     <span>ثبت کد</span>
                 </button>
             </form>
-            <a class="cart-checkout-btn" href="checkout.html">
+            <a class="cart-checkout-btn" href="">
                 <span class="checkout-label">ثبت نهایی سفارشات</span>
-                <span class="checkout-price">385,000</span>
+                <span class="checkout-price">{{this.$filters.numbers(this.CartTotalPrice) }} </span><span class="checkout-price font-14">تومان</span>
+
             </a>
         </div>
     </aside>
