@@ -10,10 +10,12 @@
                 </div>
             </div>
             <div class="row">
-                <div v-for="i in 6" class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12 p-1">
-                    <product_single_two></product_single_two>
+                <div v-if="loading" v-for="i in 6" class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12 p-1">
+                    <product_skeleton></product_skeleton>
                 </div>
-
+                <div v-else v-for="item in items" class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12 p-1">
+                    <product_single_two :product="item"></product_single_two>
+                </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -46,11 +48,46 @@
 <script>
 import {defineComponent} from 'vue'
 import Front_Product_Single_Two from "../../products/Front_Product_Single_Two.vue";
+import {mapActions} from "vuex";
+import Front_Skeleton_Product_Single_Two from "../../skeletons/Front_Skeleton_Product_Single_Two.vue";
 
 export default defineComponent({
     name: "Front_Index_Features",
     components : {
         'product_single_two' : Front_Product_Single_Two,
+        'product_skeleton' : Front_Skeleton_Product_Single_Two,
+    },
+    mounted() {
+        this.GetItems();
+    },
+    data(){
+        return{
+            items:[],
+            loading:true,
+        }
+    },
+    methods :{
+        ...mapActions([
+            "ProductsFront",
+        ]),
+
+        GetItems(){
+            let params = {
+                per_page:6,
+               random : true
+            }
+            this.ProductsFront(params).then(res => {
+                this.loading=false;
+                this.items = res.data.result.data;
+            }).catch(error => {
+                this.loading=false;
+                this.NotifyServerError();
+
+            })
+
+        }
+
+
     }
 })
 </script>

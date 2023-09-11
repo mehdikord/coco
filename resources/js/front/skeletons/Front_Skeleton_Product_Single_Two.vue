@@ -1,19 +1,22 @@
+<script>
+export default {
+    name: "Front_Skeleton_Product_Single_Two"
+}
+</script>
 
 <template>
-    <div v-if="product" class="feature-card">
+    <div class="feature-card">
         <div class="feature-media">
             <div class="feature-label">
-<!--                <label class="label-text feat">پیشنهاد ما</label>-->
+                <!--                <label class="label-text feat">پیشنهاد ما</label>-->
             </div>
-            <a class="feature-image" >
-                <img v-if="product.image.image" :src="product.image.image" alt="product">
+            <a class="feature-image">
+                <q-skeleton class="img-skeleton mt-2 mb-2 rounded-borders" type="QAvatar" square />
             </a>
         </div>
         <div class="feature-content text-left">
             <h6 class="product-name">
-                <a href="">
-                    {{product.name}}
-                </a>
+                <q-skeleton type="text" />
             </h6>
             <div class="product-rating float-left">
                 <i class="active icofont-star"></i>
@@ -23,39 +26,14 @@
                 <i class="icofont-star"></i>
 
             </div>
-            <div class="mt-4 mobile-price text-dark">
-                <template v-if="product.sale">
-
-
-
-
-                </template>
-                <template v-else>
-                    {{this.$filters.numbers(product.price)}}
-                </template>
-                <small> تومان </small>
+            <div class="mt-4 mobile-price">
+                <q-skeleton class="mt-1 mb-1 price-skeleton" type="text" />
             </div>
             <p class="product-desc">
             </p>
-            <button class="product-add pt-2 pb-2" title="افزودن این محصول به سبد خرید">
-                <span>افزودن به سبد</span>
-                <i class="fas fa-shopping-basket me-2"></i>
-            </button>
-            <div class="product-action">
-                <button class="action-minus" title="Quantity Minus">
-                    <i class="icofont-minus"></i>
-                </button>
-                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
-                <button class="action-plus" title="Quantity Plus">
-                    <i class="icofont-plus"></i>
-                </button>
-            </div>
-
-
-
+            <q-skeleton type="QBtn" class="w-100" />
         </div>
     </div>
-
 </template>
 
 <style scoped>
@@ -82,6 +60,17 @@
 .product-desc{
     font-size: 13px;
 }
+.img-skeleton{
+    margin: 0 auto;
+    width:170px ;
+    height:170px ;
+}
+.price-skeleton{
+    margin: 0 auto;
+    width: 70%;
+    height: 35px;
+}
+
 @media only screen and (max-width: 600px) {
     .feature-image img {
         width: 90px;
@@ -116,11 +105,3 @@
 
 }
 </style>
-<script>
-import {defineComponent} from 'vue'
-
-export default defineComponent({
-    name: "Front_Product_Single_Two",
-    props:['product'],
-})
-</script>

@@ -14,7 +14,7 @@
                 <div>
                     <a href="" class="product-name text-dark">{{product.product.name}}</a>
                 </div>
-                <span class="text-danger">{{product.product.category.name}}</span>
+                <span class="text-danger" v-if="product.product.category">{{product.product.category.name}}</span>
                 <p class="sub-price">
                     <template v-if="product.product.sale">
                         {{this.$filters.numbers(product.product.sale)}}
