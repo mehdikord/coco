@@ -4,9 +4,10 @@ namespace App\Repository\Brands;
 
 use App\Interfaces\Brands\BrandsInterface;
 use App\Models\Brand;
+use App\Repository\Base\BasePaginateRepo;
 use App\Services\MediaServices\MediaService;
 
-class BrandsRepository implements BrandsInterface
+class BrandsRepository extends BasePaginateRepo implements BrandsInterface
 {
     public function index()
     {
@@ -52,5 +53,13 @@ class BrandsRepository implements BrandsInterface
         return response_success(true,'item deleted success');
     }
 
+    public function front_index()
+    {
+        $data = Brand::query();
+        $data->withCount('products');
+
+        return response_success($data->orderBy($this->sort_by,$this->sort_type)->paginate($this->per_page));
+
+    }
 
 }

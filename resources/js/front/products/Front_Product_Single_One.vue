@@ -28,7 +28,8 @@ export default defineComponent({
                 <i class="fas fa-heart font-20"></i>
             </button>
             <a class="product-image " >
-                <img v-if="product.image.image" :src="product.image.image" alt="product" />
+                <img v-if="product.image" :src="product.image.image" alt="product" />
+                <img v-else src="/front/images/coffee2.png" alt="product" />
             </a>
 
         </div>

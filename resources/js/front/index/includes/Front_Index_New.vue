@@ -69,7 +69,6 @@ export default defineComponent({
         ...mapActions([
             "ProductsFront",
         ]),
-
         GetItems(){
             let params = {
                 per_page:12,
@@ -86,8 +85,6 @@ export default defineComponent({
             })
 
         }
-
-
     }
 })
 </script>

@@ -79,6 +79,18 @@ export default {
             } )
         },
 
+        BrandsFront(_,item){
+            return new Promise((resolve,reject) => {
+                axios.get('brands',{
+                    params: item,
+                }).then((result) => {
+                    resolve(result);
+                }).catch(error => {
+                    reject(error);
+                })
+            } )
+        }
+
 
     }
 

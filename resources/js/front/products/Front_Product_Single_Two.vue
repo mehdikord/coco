@@ -6,7 +6,9 @@
 <!--                <label class="label-text feat">پیشنهاد ما</label>-->
             </div>
             <a class="feature-image" >
-                <img v-if="product.image.image" :src="product.image.image" alt="product">
+                <img v-if="product.image" :src="product.image.image" alt="product">
+                <img v-else src="/front/images/coffee2.png" alt="product" />
+
             </a>
         </div>
         <div class="feature-content text-left">

@@ -25,3 +25,5 @@ Route::get('',[\App\Http\Controllers\Front\ProductController::class,'index']);
 
 });
 
+Route::get('brands',[\App\Http\Controllers\Front\BrandController::class,'index']);
+

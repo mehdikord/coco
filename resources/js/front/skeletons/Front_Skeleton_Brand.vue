@@ -1,16 +1,28 @@
+<script>
+export default {
+    name: "Front_Skeleton_Brand"
+}
+</script>
 
 <template>
-    <div v-if="brand" class="text-center">
+    <div class="text-center">
         <div class="brand-media text-center">
-            <img :src="brand.image ?? '/front/images/coffee3.png'" alt="brand">
+            <img src="/front/images/coffee3.png" alt="brand">
+            <div class="brand-overlay">
+                <a href="">
+                    <i class="fas fa-link"></i>
+                </a>
+            </div>
+        </div>
+        <div class="brand-meta mt-1 text-center">
+            <h6 class="title pe-3 ps-3"> <q-skeleton type="QBadge" class="w-100"/></h6>
+            <div class="mt-3 pe-5 ps-5">
+                <q-skeleton type="text"  />
+            </div>
 
         </div>
-        <div class="brand-meta mt-1">
-            <h6 class="title"> {{brand.name}}</h6>
-            <small class="mt-1">({{brand.products_count}} محصول)</small>
-        </div>
     </div>
-    <skeleton v-else />
+
 </template>
 
 <style scoped>
@@ -55,16 +67,3 @@
 
 }
 </style>
-<script>
-import {defineComponent} from 'vue'
-import Front_Skeleton_Brand from "../skeletons/Front_Skeleton_Brand.vue";
-
-export default defineComponent({
-    name: "Front_Brand_One",
-    props:['brand'],
-    components:{
-        'skeleton' : Front_Skeleton_Brand,
-    }
-
-})
-</script>
