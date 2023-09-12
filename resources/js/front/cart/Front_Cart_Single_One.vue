@@ -5,7 +5,7 @@
             <a href="#">
                 <img v-if="product.product.image" :src="product.product.image.image" alt="product">
             </a>
-            <button class="cart-delete">
+            <button @click="this.CartRemove(product.product.id)" class="cart-delete">
                 <i class="far fa-trash-alt"></i>
             </button>
         </div>

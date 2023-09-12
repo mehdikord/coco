@@ -4,33 +4,16 @@
         <div class="container">
             <div class="row m-0">
                 <div class="col-lg-12">
-                    <div class="section-heading">
+                    <div class="section-heading text-green-8">
                         محصولات جدید کوکو رو از دست نده
                     </div>
                 </div>
             </div>
-            <div class="row m-0">
-                <div class="col-12 p-0">
-                    <div class="card mb-4">
-                        <div class="card-body pt-2 pb-4 row justify-center nav">
-                            <div v-for="i in 6" class="col-lg-2 col-md-2 col-sm-3 col-xs-4 mt-3">
-                                <a :href="'#tab_new_'+i" class="tab-link tab-link-title" :class="{'active' : i===1}"  data-bs-toggle="tab">
-                                    <i class="fas fa-list"></i>
-                                    <span>دسته بندی {{i}}</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
         <div class="container-fluid">
-            <div v-for="i in 6" class="tab-pane fade" :class="{'show active' : i===1}" :id="'tab_new_'+i">
-                <div class="row justify-center">
-                    <div v-for="i in 5" class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1">
-                        <product_single_one></product_single_one>
-                    </div>
+            <div class="row justify-center">
+                <div v-for="item in items" class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1">
+                    <product_single_one :product="item"></product_single_one>
                 </div>
             </div>
         </div>
@@ -39,6 +22,10 @@
 </template>
 
 <style scoped>
+.cat-box{
+    font-size: 13px;
+    padding: 8px 18px;
+}
 .tab-link-title{
     font-size: 15px;
 }
@@ -62,11 +49,45 @@
 <script>
 import {defineComponent} from 'vue'
 import Front_Product_Single_One from "../../products/Front_Product_Single_One.vue";
+import {mapActions} from "vuex";
 
 export default defineComponent({
     name: "Front_Index_New",
     components : {
         'product_single_one' : Front_Product_Single_One
+    },
+    mounted() {
+        this.GetItems();
+    },
+    data(){
+        return{
+            items:[],
+            loading:true,
+        }
+    },
+    methods :{
+        ...mapActions([
+            "ProductsFront",
+        ]),
+
+        GetItems(){
+            let params = {
+                per_page:12,
+                sort_by:'id',
+                sort_type:'DESC',
+            }
+            this.ProductsFront(params).then(res => {
+                this.loading=false;
+                this.items = res.data.result.data;
+            }).catch(error => {
+                this.loading=false;
+                this.NotifyServerError();
+
+            })
+
+        }
+
+
     }
 })
 </script>

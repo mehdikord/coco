@@ -18,4 +18,5 @@ class CategoryController extends Controller
     {
         return $this->repository->front_index();
     }
+
 }

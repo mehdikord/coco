@@ -109,6 +109,11 @@ App.mixin({
             this.$store.commit("ReduceFromCart",id);
             this.NotifySuccess('از سبد حذف شد');
 
+        },
+        CartRemove(id){
+          this.$store.commit("RemoveFromCart",id);
+            this.NotifySuccess('از سبد حذف شد');
+
         }
 
 

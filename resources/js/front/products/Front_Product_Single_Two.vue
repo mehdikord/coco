@@ -23,35 +23,34 @@
                 <i class="icofont-star"></i>
 
             </div>
+
             <div class="mt-4 mobile-price text-dark">
+                <div class="mb-1 text-danger font-13">
+                    {{ product.category.name }}
+                </div>
                 <template v-if="product.sale">
-
-
 
 
                 </template>
                 <template v-else>
-                    {{this.$filters.numbers(product.price)}}
+                    <strong class="text-success">{{this.$filters.numbers(product.price)}}</strong>
                 </template>
                 <small> تومان </small>
             </div>
             <p class="product-desc">
             </p>
-            <button class="product-add pt-2 pb-2" title="افزودن این محصول به سبد خرید">
+            <button v-if="!this.CartProductCheck(product.id)" @click="this.CartAdd(product,1)" class="product-add pt-2 pb-2" title="افزودن این محصول به سبد خرید">
                 <span>افزودن به سبد</span>
                 <i class="fas fa-shopping-basket me-2"></i>
             </button>
-            <div class="product-action">
-                <button class="action-minus" title="Quantity Minus">
-                    <i class="icofont-minus"></i>
+            <div v-else class="product-action">
+                <button @click="this.CartReduce(product.id)" title="کم کردن تعداد">
+                    <i class="icofont-minus">
+                    </i>
                 </button>
-                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="1">
-                <button class="action-plus" title="Quantity Plus">
-                    <i class="icofont-plus"></i>
-                </button>
+                <input  title="افزودن تعداد" type="number" :value="this.CartProductQuantity(product.id)">
+                <button @click="this.CartAdd(product,1)" title="Quantity Plus"><i class="icofont-plus"></i></button>
             </div>
-
-
 
         </div>
     </div>
@@ -82,6 +81,10 @@
 .product-desc{
     font-size: 13px;
 }
+.product-action{
+    display: flex;
+}
+
 @media only screen and (max-width: 600px) {
     .feature-image img {
         width: 90px;
