@@ -26,8 +26,10 @@ export default {
 
             localStorage.setItem('coco_cart',JSON.stringify(state.Cart))
         },
-        RemoveFromCart(state,index){
-            state.Cart.splice(index,1);
+        RemoveFromCart(state,id){
+            state.Cart = state.Cart.filter(item => {
+                return item.product.id !== id
+            })
             localStorage.setItem('coco_cart',JSON.stringify(state.Cart))
         },
         ReduceFromCart(state,id){
