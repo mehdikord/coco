@@ -31,8 +31,32 @@
 </style>
 <script>
 import {defineComponent} from 'vue'
+import {mapActions} from "vuex";
 
 export default defineComponent({
-    name: "Front_Shop_Filter_Category"
+    name: "Front_Shop_Filter_Category",
+    mounted() {
+        this.GetItems();
+    },
+    data(){
+        return{
+            loading:true,
+            items:[],
+        }
+    },
+    methods:{
+        ...mapActions([
+            "CategoriesFrontIndex"
+        ]),
+        GetItems(){
+            this.CategoriesFrontIndex().then(res =>{
+                this.loading=false;
+                this.items = res.data.result;
+            }).catch(error => {
+                return this.NotifyServerError()
+            })
+        }
+
+    }
 })
 </script>
