@@ -9,6 +9,7 @@ import quasarLang from 'quasar/lang/fa-IR'
 import 'quasar/dist/quasar.css';
 import Helper from "./helpers/Helper";
 import {mapActions, mapGetters, mapMutations} from "vuex";
+import Front_Global_Loading_Infinite from "./front/globals/Front_Global_Loading_Infinite.vue";
 
 const App=createApp(Front_Template);
 App.use(Quasar, {
@@ -134,7 +135,11 @@ App.mixin({
 
 
 })
+// ++++++++++++++++++++
 
+// ++++++++++ Global Functions (Mixin) ++++++++++
+
+App.component("global_loading_infinite",Front_Global_Loading_Infinite)
 // ++++++++++++++++++++
 
 // ++++++++++ Global Filters ++++++++++

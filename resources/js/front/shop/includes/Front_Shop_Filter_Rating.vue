@@ -15,7 +15,6 @@
                     <i class="fas fa-star active"></i>
                     </label>
                 </div>
-                <span class="shop-widget-number">(28)</span>
             </li>
             <li>
                 <div class="shop-widget-content">
@@ -28,7 +27,6 @@
                     <i class="fas fa-star"></i>
                     </label>
                 </div>
-                <span class="shop-widget-number">(28)</span>
             </li>
             <li>
                 <div class="shop-widget-content">
@@ -41,7 +39,6 @@
                         <i class="fas fa-star"></i>
                     </label>
                 </div>
-                <span class="shop-widget-number">(35)</span>
             </li>
             <li>
                 <div class="shop-widget-content">
@@ -54,7 +51,6 @@
                         <i class="fas fa-star"></i>
                     </label>
                 </div>
-                <span class="shop-widget-number">(35)</span>
             </li>
             <li>
                 <div class="shop-widget-content">
@@ -67,7 +63,6 @@
                         <i class="fas fa-star"></i>
                     </label>
                 </div>
-                <span class="shop-widget-number">(35)</span>
             </li>
 
         </ul>

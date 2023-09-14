@@ -3,13 +3,13 @@
     <div>
         <strong class="font-16">مرتب سازی : </strong>
         <div class="row mt-1">
-            <div class="col">
-                <q-chip class="font-13 bg-grey-4 pointer" size="md">جدید‌‌ترین</q-chip>
+            <div class="col" @click="$emit('SortingFilter',{sort_by:'id',sort_type: 'desc'})">
+                <q-chip class="font-13 bg-grey-4 pointer" size="md" :class="{'chip-active' : active === 'new'}">جدید‌‌ترین</q-chip>
             </div>
-            <div class="col">
-                <q-chip class="font-14 bg-green-6 text-white pointer" size="md">گران‌ترین</q-chip>
+            <div class="col" @click="$emit('SortingFilter',{sort_by:'price',sort_type: 'desc'})">
+                <q-chip class="font-14 bg-grey-4 pointer" size="md">گران‌ترین</q-chip>
             </div>
-            <div class="col">
+            <div class="col" @click="$emit('SortingFilter',{sort_by:'price',sort_type: 'asc'})">
                 <q-chip class="font-13 bg-grey-4 pointer" size="md">ارزان‌ترین</q-chip>
             </div>
             <div class="col">
@@ -28,11 +28,21 @@
 .pointer{
     cursor: pointer;
 }
+.chip-active{
+    background-color: #23B122!important;
+    color: white;
+}
 </style>
 <script>
 import {defineComponent} from 'vue'
 
 export default defineComponent({
-    name: "Front_Shop_Filter_Top"
+    name: "Front_Shop_Filter_Top",
+    data(){
+        return {
+            active:'new'
+        }
+    }
+
 })
 </script>

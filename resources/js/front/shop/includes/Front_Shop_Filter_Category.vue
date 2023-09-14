@@ -3,18 +3,18 @@
     <h6 class="shop-widget-title font-15">براساس دسته ‌بندی</h6>
     <form>
         <input class="shop-widget-search" type="text" placeholder="دسته بندی ...">
-        <ul class="shop-widget-list shop-widget-scroll">
-            <li v-for="i in 6">
+        <global_loading_infinite v-if="loading" />
+        <ul v-else class="shop-widget-list shop-widget-scroll">
+            <li v-for="item in items">
                 <div class="shop-widget-content">
                     <input type="checkbox" id="cate1">
                     <label for="cate1">
-                        دسته بندی {{i}}
+                        {{item.name}}
                     </label>
                 </div>
-                <span class="shop-widget-number">(13)</span>
             </li>
-
         </ul>
+
         <button class="shop-widget-btn sm-hide xs-hide">
             <i class="far fa-trash-alt"></i><span>حذف فیلتر</span>
         </button>
