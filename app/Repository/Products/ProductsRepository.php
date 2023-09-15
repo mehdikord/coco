@@ -107,7 +107,7 @@ class ProductsRepository extends BasePaginateRepo implements ProductsInterface
         $data = Product::query();
         $data->where('is_active',true);
         $data->with('category');
-        if (request()->filled('random') && request()->random == 'true'){
+        if (request()->filled('random') && request()->random === 'true'){
             $data->inRandomOrder();
         }
         $data->select([
@@ -122,10 +122,33 @@ class ProductsRepository extends BasePaginateRepo implements ProductsInterface
             'views',
             'sells',
             'commenting',
-            'rate'
+            'rate',
         ]);
+        $data->withCount('orders');
 
-        return response_success($data->orderBy($this->sort_by,$this->sort_type)->paginate($this->per_page));
+        //Categories
+        if (request()->filled('category')){
+            $category = json_decode(request()->category, false, 512, JSON_THROW_ON_ERROR);
+            if (count($category)){
+                $category_ids = shop_categories_filter($category);
+                if (count($category_ids)){
+                    $data->whereIn('category_id',$category_ids);
+                }
+
+            }
+
+        }
+
+
+        //Min and Max Prices
+        if (request()->filled('min_price')){
+            $data->where('price','>=',request()->min_price);
+        }
+        if (request()->filled('max_price')){
+            $data->where('price','<=',request()->max_price);
+        }
+
+        return response_success($data->orderBy($this->sort_by,$this->sort_type)->paginate($this->per_page)->appends(request()->except('page')));
     }
 
 

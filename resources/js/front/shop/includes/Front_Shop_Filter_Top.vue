@@ -3,20 +3,20 @@
     <div>
         <strong class="font-16">مرتب سازی : </strong>
         <div class="row mt-1">
-            <div class="col" @click="$emit('SortingFilter',{sort_by:'id',sort_type: 'desc'})">
+            <div class="col" @click="active='new' ; $emit('SortingFilter',{sort_by:'id',sort_type: 'desc'})">
                 <q-chip class="font-13 bg-grey-4 pointer" size="md" :class="{'chip-active' : active === 'new'}">جدید‌‌ترین</q-chip>
             </div>
-            <div class="col" @click="$emit('SortingFilter',{sort_by:'price',sort_type: 'desc'})">
-                <q-chip class="font-14 bg-grey-4 pointer" size="md">گران‌ترین</q-chip>
+            <div class="col" @click="active='max_price' ;$emit('SortingFilter',{sort_by:'price',sort_type: 'desc'})">
+                <q-chip class="font-13 bg-grey-4 pointer" size="md" :class="{'chip-active' : active === 'max_price'}">گران‌ترین</q-chip>
             </div>
-            <div class="col" @click="$emit('SortingFilter',{sort_by:'price',sort_type: 'asc'})">
-                <q-chip class="font-13 bg-grey-4 pointer" size="md">ارزان‌ترین</q-chip>
+            <div class="col" @click="active='min_price' ;$emit('SortingFilter',{sort_by:'price',sort_type: 'asc'})">
+                <q-chip class="font-13 bg-grey-4 pointer" size="md" :class="{'chip-active' : active === 'min_price'}">ارزان‌ترین</q-chip>
             </div>
-            <div class="col">
-                <q-chip class="font-13 bg-grey-4 pointer" size="md">پرفروش‌ترین</q-chip>
+            <div class="col" @click="active='orders';$emit('SortingFilter',{sort_by:'orders_count',sort_type: 'desc'})">
+                <q-chip class="font-13 bg-grey-4 pointer" size="md" :class="{'chip-active' : active === 'orders'}">پرفروش‌ترین</q-chip>
             </div>
-            <div class="col">
-                <q-chip class="font-13 bg-grey-4 pointer" size="md">پرفروش‌ترین</q-chip>
+            <div class="col" @click="active='rating' ;$emit('SortingFilter',{sort_by:'rate',sort_type: 'desc'})">
+                <q-chip class="font-13 bg-grey-4 pointer" size="md" :class="{'chip-active' : active === 'rating'}">محبوب ترین</q-chip>
             </div>
         </div>
         <hr class="w-100">
@@ -31,6 +31,7 @@
 .chip-active{
     background-color: #23B122!important;
     color: white;
+    font-size: 14px!important;
 }
 </style>
 <script>

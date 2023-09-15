@@ -1,24 +1,23 @@
 
 <template>
+    {{selected}}
     <h6 class="shop-widget-title font-15">براساس دسته ‌بندی</h6>
-    <form>
-        <input class="shop-widget-search" type="text" placeholder="دسته بندی ...">
-        <global_loading_infinite v-if="loading" />
-        <ul v-else class="shop-widget-list shop-widget-scroll">
-            <li v-for="item in items">
-                <div class="shop-widget-content">
-                    <input type="checkbox" id="cate1">
-                    <label for="cate1">
-                        {{item.name}}
-                    </label>
-                </div>
-            </li>
-        </ul>
+    <input class="shop-widget-search" type="text" placeholder="دسته بندی ...">
+    <global_loading_infinite v-if="loading" />
+    <ul v-else class="shop-widget-list shop-widget-scroll">
+        <li v-for="item in items">
+            <div class="shop-widget-content">
+                <input @change="DoFilter" v-model="selected" type="checkbox" :value="item.id">
+                <label >
+                    {{item.name}}
+                </label>
+            </div>
+        </li>
+    </ul>
 
-        <button class="shop-widget-btn sm-hide xs-hide">
-            <i class="far fa-trash-alt"></i><span>حذف فیلتر</span>
-        </button>
-    </form>
+<!--        <button class="shop-widget-btn sm-hide xs-hide">-->
+<!--            <i class="far fa-trash-alt"></i><span>حذف فیلتر</span>-->
+<!--        </button>-->
 </template>
 
 <style scoped>
@@ -42,6 +41,7 @@ export default defineComponent({
         return{
             loading:true,
             items:[],
+            selected:[]
         }
     },
     methods:{
@@ -55,8 +55,10 @@ export default defineComponent({
             }).catch(error => {
                 return this.NotifyServerError()
             })
+        },
+        DoFilter(){
+            this.$emit('Filter',this.selected)
         }
-
     }
 })
 </script>

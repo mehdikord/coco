@@ -66,9 +66,9 @@
             </li>
 
         </ul>
-        <button class="shop-widget-btn sm-hide xs-hide">
-            <i class="far fa-trash-alt"></i><span>حذف فیلتر</span>
-        </button>
+<!--        <button class="shop-widget-btn sm-hide xs-hide">-->
+<!--            <i class="far fa-trash-alt"></i><span>حذف فیلتر</span>-->
+<!--        </button>-->
     </form>
 </template>
 

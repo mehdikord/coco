@@ -14,10 +14,10 @@
                         </a>
                     </div>
                     <div class="shop-widget">
-                        <filter_price></filter_price>
+                        <filter_price @PriceFilter="(val) => PricesFilter(val)"></filter_price>
                     </div>
                     <div class="shop-widget">
-                        <filter_category></filter_category>
+                        <filter_category @Filter="(val) => CatFilter(val)"></filter_category>
                     </div>
 
                     <div class="shop-widget">
@@ -29,14 +29,17 @@
                 </div>
                 <div class="col-lg-9">
                     <div class="row">
+
                         <div class="col-lg-12">
                             <div class="top-filter">
-                                <filter_top @RunFilter="(val) => UpdateQuery('page',val)"></filter_top>
+                                <filter_top @SortingFilter="(val) => UpdateFilter(val)"></filter_top>
                             </div>
                         </div>
 
                     </div>
+
                     <div class="row">
+
                         <div v-if="loading" v-for="i in 16" class="col-xl-3 col-lg-3 col-md-4 p-1">
                             <skeleton_product_one></skeleton_product_one>
                         </div>
@@ -190,6 +193,7 @@ export default defineComponent({
             params:[],
             links:[],
             items:[],
+            filters:false,
         }
     },
     watch: {
@@ -197,6 +201,7 @@ export default defineComponent({
             // Check if the query parameters have changed
             if (to.query !== from.query) {
                 // Call your function here
+                this.loading=true;
                 this.GetItems();
             }
         },
@@ -207,14 +212,12 @@ export default defineComponent({
         ]),
         GetItems(){
             let params = this.$route.query;
-            console.log(params)
             this.ProductsFront(params).then(res => {
                 this.items = res.data.result.data;
                 this.links=[];
                 this.links = res.data.result.links;
                 this.links.shift();
                 this.links.pop();
-                console.log(this.links)
                 this.loading=false;
             }).catch(error => {
                 return this.NotifyServerError();
@@ -224,9 +227,36 @@ export default defineComponent({
         UpdateQueryPage(key,val){
             this.params[key] = val;
             this.$router.push({name : 'shop' , query : this.params})
+        },
+        UpdateFilter(filter){
+            this.params['sort_by'] = filter.sort_by;
+            this.params['sort_type'] = filter.sort_type;
+            this.$router.push({name : 'shop' , query : this.params})
+
+        },
+        PricesFilter(val){
+            this.params['min_price'] = val.min_price;
+            this.params['max_price'] = val.max_price;
+            this.$router.push({name : 'shop' , query : this.params})
+        },
+        CatFilter(val){
+            this.params['category'] = JSON.stringify(val);
+            this.$router.push({name : 'shop' , query : this.params})
+
+            console.log(val)
+        },
+        RemoveFilters(){
+            let page = this.params.page
+            this.params=[];
+            if (page){
+                this.params['page'] = page;
+            }
+            this.$router.push({name : 'shop' , query : this.params})
+
         }
 
-    }
+
+    },
 })
 </script>
 
