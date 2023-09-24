@@ -118,6 +118,7 @@ class ProductsRepository extends BasePaginateRepo implements ProductsInterface
             'short_description',
             'price',
             'sale',
+            'code',
             'quantity',
             'views',
             'sells',
@@ -149,6 +150,35 @@ class ProductsRepository extends BasePaginateRepo implements ProductsInterface
         }
 
         return response_success($data->orderBy($this->sort_by,$this->sort_type)->paginate($this->per_page)->appends(request()->except('page')));
+    }
+
+    public function front_show($item)
+    {
+        $product = Product::where('code',$item)
+            ->withCount('comments')
+            ->where('is_active',true)
+            ->with(['comments.user' => function ($comment_user){
+                $comment_user->select(['id','name']);
+            }])
+            ->with(['comments' => function ($comment){
+                $comment->take(3)->get();
+            }])
+            ->firstorfail();
+        $product->load('images');
+        $product->load('category');
+        $product->load('brand');
+        $product->load('category.parent');
+        return response_success($product);
+    }
+
+    public function front_comments($item)
+    {
+        $product = Product::where('code',$item)->where('is_active',true)->firstorfail();
+        $comments = $product->comments()->with(['user' => function ($user){
+            $user->select(['id','name']);
+        }])->get();
+
+        return response_success($comments);
     }
 
 

@@ -1,12 +1,13 @@
 
 <template>
-    <section class="inner-section">
+    <skeleton_product v-if="loading"></skeleton_product>
+    <section v-else class="inner-section">
         <div class="container mt-4 mb-3">
-            <span class="text-muted">صفحه اصلی </span>
+             <router-link :to="{name : 'index'}" class="text-muted"> صفحه اصلی </router-link>
             /
-            <span class="text-muted"> قهوه ها </span>
+            <router-link v-if="product.category && product.category.parent" to="" class="text-muted"> {{product.category.parent.name}} </router-link>
             /
-            <span class="text-dark">قهوه ربستا</span>
+            <router-link v-if="product.category" to=""  class="text-dark"> {{product.category.name}} </router-link>
         </div>
         <div class="container">
             <div class="row">
@@ -19,10 +20,8 @@
                         infinite
                         class="for-main-slider sm-hide xs-hide"
                     >
-                        <q-carousel-slide :name="1" img-src="https://tamkins.com/wp-content/uploads/2022/11/Layer-7.png" />
-                        <q-carousel-slide :name="2" img-src="https://tamkins.com/wp-content/uploads/2022/11/Layer-6.png" />
-                        <q-carousel-slide :name="3" img-src="https://tamkins.com/wp-content/uploads/2022/11/Layer-12.png" />
-                        <q-carousel-slide :name="4" img-src="https://tamkins.com/wp-content/uploads/2022/11/Layer-11.png" />
+                        <q-carousel-slide v-for="(image,index) in product.images" :name="index" :img-src="image.image" />
+
                     </q-carousel>
                     <q-carousel
                         animated
@@ -36,11 +35,7 @@
                         control-type="outline"
                         class="md-hide lg-hide xl-hide"
                     >
-                        <q-carousel-slide :name="1" img-src="https://tamkins.com/wp-content/uploads/2022/11/Layer-7.png" />
-                        <q-carousel-slide :name="2" img-src="https://tamkins.com/wp-content/uploads/2022/11/Layer-7.png" />
-                        <q-carousel-slide :name="3" img-src="https://tamkins.com/wp-content/uploads/2022/11/Layer-7.png" />
-                        <q-carousel-slide :name="4" img-src="https://tamkins.com/wp-content/uploads/2022/11/Layer-7.png" />
-
+                        <q-carousel-slide v-for="(image,index) in product.images" :name="index" :img-src="image.image" />
 
                         <template v-slot:control>
 
@@ -56,42 +51,54 @@
                         </template>
 
                     </q-carousel>
+
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-12 no-padding-mobile">
                     <div class="details-content">
-                        <h3 class="details-name"><a href="#">نام محصول اینجاست</a></h3>
+                        <h3 class="details-name">
+                            {{product.name}}
+                        </h3>
                         <div class="">
                             <div class="category">
                                 <span>دسته بندی : </span>
-                                <strong class="text-dark">
-                                    قهوه ها
+                                <strong >
+                                    <router-link v-if="product.category" to="" class="text-blue">{{product.category.name}}</router-link>
                                 </strong>
                             </div>
                             <div class="mt-2 category">
                                 <span>برند : </span>
-                                <strong class="text-dark">
-                                    تام کینز
+                                <strong>
+                                    <router-link v-if="product.brand" to="" class="text-red">{{product.brand.name}}</router-link>
                                 </strong>
                             </div>
                         </div>
                         <div class="details-rating mt-2">
-                            <i class="active icofont-star"></i>
-                            <i class="active icofont-star"></i>
-                            <i class="active icofont-star"></i>
-                            <i class="active icofont-star"></i>
-                            <i class="icofont-star"></i>
-                            <a class="rate-review" href="#">(3 دیدگاه)</a>
+                            <template v-if="product.rate">
+                                <i v-for="i in 5" class="icofont-star" :class="{'active' : i <= product.rate}"></i>
+
+                            </template>
+                            <a class="rate-review" href="#">({{product.comments_count}} دیدگاه)</a>
+
                         </div>
                         <h3 class="mt-2">
-                            <strong class="price me-2 text-success">185,000</strong>
-                            <del class="price-old text-danger">200,000</del>
+                            <template v-if="product.sale">
+                                <strong class="price me-2 text-success">{{this.$filters.numbers(product.sale)}}</strong>
+                                <del class="price-old text-danger">{{this.$filters.numbers(product.price)}}</del>
+
+                            </template>
+                            <template v-else>
+                                <strong class="price me-2 text-success">185,000</strong>
+
+                            </template>
+
                             <span class="me-1 curency">تومان</span>
                         </h3>
                         <h5 class="font-16 info-title">توضیحات محصول : </h5>
                         <p class="details-desc mt-1 text-justify">
-                            قَهوه، گونه‌ای نوشیدنی رایج است که از دانه‌های بوداده و آسیاب‌شدهٔ گیاه قهوه به‌دست می‌آید. قهوه کمی اسیدی است و به‌علت داشتن کافئین بالا، یک ماده محرک است...
+                            {{product.short_description}} ...
                             <br>
-                            <span class="text-blue">مشاهده کامل توضیحات </span>
+                            <br>
+                            <strong class="text-blue">مشاهده کامل توضیحات </strong>
                         </p>
                         <div class="mb-3">
                             <div class="pointer" @click="set_rate=true">
@@ -144,9 +151,11 @@
                         </div>
                         <div class="details-add-group">
                             <div class="row text-center">
+
                                 <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-                                <q-btn  color="success" icon-right="fas fa-cart-arrow-down" class="w-100 pt-2 pb-2"> افرودن به سبد خرید</q-btn>
+                                <q-btn v-if="!this.CartProductCheck(product.id)" @click="this.CartAdd(product,1)"  color="success" icon-right="fas fa-cart-arrow-down" class="w-100 pt-2 pb-2" title="افزودن این محصول به سبد خرید"> افرودن به سبد خرید</q-btn>
                                 </div>
+
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
                                     <q-icon name="fas fa-heart" class="favorite-icon" color="blue-grey-8 pointer"></q-icon>
                                 </div>
@@ -159,24 +168,25 @@
             </div>
         </div>
     </section>
-    <div>
+    <div  v-if="!loading">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 q-px-none">
                     <div class="product-details-frame p-4">
                         <strong class="font-16 info-title">معرفی و توضیحات :</strong>
-                        <p class="mt-4 text-justify details-desc">
-                            تاریخ قطعی ورود قهوه به ایران معلوم نیست. اما چون در آغاز پادشاهی شاه عباس قهوه‌خانه در ایران وجود داشته ممکن است که نوشیدن قهوه از دوران شاه تهماسب یکم در ایران معمول شده باشد.[۹] قهوه در زمان صفویه جای خود را در میان نوشیدنی‌های روزانه ایرانی‌ها باز کرد[۱۰] و نمونه‌ای است از ورود ایران به شبکه اقتصادی جهانی آن دوران. تا قرن نوزدهم که چای به نوشیدنی غالب مردم تبدیل شد. (هنوز در ایران کلمهٔ قهوه خانه حتی به مکان‌هایی که در آن چای سرو می‌شود هم گفته می‌شود که نشان می‌دهد قهوه در ایران متداول‌تر از چای بوده[۱۱] یا پیش از ورود چای، پای خود را به ایران باز کرده[۱۰]) به گونه‌ای که هم‌اکنون نیز در زبان فارسی به رنگ آن، قهوه‌ای گفته می‌شود. همچنان این ماده سیاه و تلخ بسته به منطقهٔ جغرافیایی و طبقهٔ اجتماعی دوستداران خود را داشت. امروزه نوشیدن گونه‌های قهوه از جمله قهوه فرانسه، اسپرسو، کاپوچینو و قهوه فوری و شیر قهوه طرفداران بسیاری پیدا کرده. البته قهوه ترک به‌خاطر محبوبیت میان ایرانیان ارمنی از گذشته در میان مردم رایج بوده و به‌واسطه فال قهوه جایگاه خاص خود را داشته‌است.
-                        </p>
+                        <div class="mt-4 details-desc">
+                          <span v-html="product.long_description"></span>
+                        </div>
                     </div>
                 </div>
+
                 <div class="col-lg-12 mt-4 q-px-none">
                     <div class="product-details-frame p-4">
                         <strong class=" font-15 info-title">مشخصات محصول :</strong>
                         <div class="mt-1">
                             <div class="row justify-center details-desc">
                                 <div class="col-md-9">
-                                    <div v-for="i in 4" class="row mt-4">
+                                    <div v-for="i in 1" class="row mt-4">
                                         <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-4 text-left">
                                             <span class="text-muted">وزن محصول </span>
                                         </div>
@@ -189,16 +199,17 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-12 mt-4 q-px-none">
                     <div class="product-details-frame p-3">
                         <strong class=" font-16 info-title">دیدگاه های کاربران :</strong>
-                        <q-btn @click="set_comment = !set_comment" outline color="success" icon="fas fa-comment-dots" class="ps-4 float-right sm-hide xs-hide">ثبت دیدگاه برای این محصول</q-btn>
+                        <q-btn @click="set_comment = !set_comment"  rounded color="success" icon="fas fa-comment-dots" class="ps-4 float-right sm-hide xs-hide">ثبت دیدگاه برای این محصول</q-btn>
 
                         <div class="mt-3 mb-2 lg-hide xl-hide md-hide">
-                            <q-btn @click="set_comment = !set_comment" color="success" class="w-100 font-12 pt-2 pb-2" icon="fas fa-comment-dots">ثبت دیدگاه برای این محصول</q-btn>
+                            <q-btn @click="set_comment = !set_comment" rounded color="success" class="w-100 font-12 pt-2 pb-2" icon="fas fa-comment-dots">ثبت دیدگاه برای این محصول</q-btn>
                         </div>
-                            <div class="mt-4">
 
+                        <div class="mt-4">
                             <q-slide-transition>
                                 <div v-show="set_comment" class="row justify-center mb-5">
                                 <div class="col-md-7">
@@ -218,33 +229,51 @@
                                 </div>
                                 </div>
                             </q-slide-transition>
+                             <template v-if="product.comments_count > 0">
+                                 <ul class="review-list">
+                                     <li v-for="comment in product.comments" class="review-item p-2">
+                                         <div class="review-media">
+                                             <a class="review-avatar" href="#">
+                                                 <img src="/front/images/user.png" alt="review">
+                                             </a>
+                                             <h5 class="review-meta">
+                                                 <strong class="font-14">{{comment.user.name}}</strong>
+                                                 <span class="font-12">
+                                                     {{this.$filters.date(comment.created_at)}}
+                                                 </span>
+                                             </h5>
+                                         </div>
+                                         <ul class="review-rating">
+<!--                                             <li class="icofont-ui-rating"></li>-->
+<!--                                             <li class="icofont-ui-rating"></li>-->
+<!--                                             <li class="icofont-ui-rating"></li>-->
+<!--                                             <li class="icofont-ui-rating"></li>-->
+<!--                                             <li class="icofont-ui-rate-blank"></li>-->
+                                         </ul>
+                                         <p class="review-desc text-justify">
+                                             {{comment.comment}}
+                                         </p>
+                                     </li>
 
-                            <ul class="review-list">
-                            <li v-for="i in 3" class="review-item p-2">
-                                <div class="review-media">
-                                    <a class="review-avatar" href="#">
-                                        <img src="/front/images/user.png" alt="review">
-                                    </a>
-                                    <h5 class="review-meta">
-                                        <strong class="font-14">مهدی کرد</strong>
-                                        <span class="font-12">11 خرداد 1402</span>
-                                    </h5>
+                                     <li v-if="product.comments_count > product.comments.length" class="pb-4 text-center">
+                                         <strong @click="GetProductComments" v-if="!loading_comment" class="text-success pointer">مشاهده {{product.comments_count - 3}} دیدگاه دیگر </strong>
+                                         <i v-else class="fas fa-spinner fa-3x fa-spin text-blue"></i>
+                                     </li>
+                                 </ul>
+                             </template>
+                            <template v-else>
+                                <div class="text-center mt-5 mb-4">
+                                    <span class="text-red-5">
+                                        هنوز هیچ دیدگاهی برای این محصول ثبت نشده است
+                                    </span>
+                                    <br>
+                                    <br>
+                                    <strong class="text-success">
+                                        اولین دیدگاه را شما ثبت کنید !
+                                    </strong>
+
                                 </div>
-                                <ul class="review-rating">
-                                    <li class="icofont-ui-rating"></li>
-                                    <li class="icofont-ui-rating"></li>
-                                    <li class="icofont-ui-rating"></li>
-                                    <li class="icofont-ui-rating"></li>
-                                    <li class="icofont-ui-rate-blank"></li>
-                                </ul>
-                                <p class="review-desc text-justify">
-                                    با افتخار و از عمیق‌ترین اعماق لذت‌بخشی‌ها، فروشگاه آنلاین کوکو، به شما تمامی محصولاتی که در خوردن آن‌ها لذت و احساسات زیبایی را تجربه خواهید کرد، ارائه می‌دهد؛ از آرامش بخش‌ترین دم‌کننده‌های قهوه تا شکلات‌های دلنشین و شگفت‌انگیز
-                                </p>
-                            </li>
-                            <li class="pb-4 text-center">
-                                <strong class="text-success">مشاهده 18 دیدگاه دیگر </strong>
-                            </li>
-                        </ul>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -261,7 +290,7 @@
                 </div>
             </div>
             <div class="row justify-center">
-                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1" v-for="i in 4">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6 p-1" v-for="i in 6">
                     <product_single_one></product_single_one>
                 </div>
             </div>
@@ -400,17 +429,58 @@ textarea{
 </style>
 <script>
 import {defineComponent} from 'vue'
+import {mapActions} from 'vuex'
 import product_single_one from "./Front_Product_Single_One.vue";
+import Front_Skeleton_Product_Page from "../skeletons/Front_Skeleton_Product_Page.vue";
 
 export default defineComponent({
     name: "Front_Product_Page",
-    components: {product_single_one},
+    components: {
+        product_single_one,
+        'skeleton_product' : Front_Skeleton_Product_Page,
+    },
+    mounted() {
+        this.GetProduct();
+    },
     data(){
         return {
             slide : 1,
             set_comment:false,
             set_rate:false,
+            product:null,
+            loading:true,
+            loading_comment:false,
+
         }
+    },
+    methods : {
+        ...mapActions([
+            'ProductsFrontShow',
+            "ProductsFrontComments"
+        ]),
+        GetProduct(){
+            let item = {
+                code : this.$route.params.code,
+                name : this.$route.params.name
+            }
+            this.ProductsFrontShow(item).then(res => {
+                this.product = res.data.result;
+                this.loading = false;
+            }).catch(error => {
+                return this.NotifyServerError();
+
+            })
+        },
+        GetProductComments(){
+            this.loading_comment=true;
+            this.ProductsFrontComments(this.$route.params.code).then(res => {
+                this.product.comments = res.data.result;
+                this.loading_comment=false
+            }).catch(error => {
+                return this.NotifyServerError();
+            })
+        }
+
     }
 })
 </script>

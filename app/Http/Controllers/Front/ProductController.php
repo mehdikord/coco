@@ -20,4 +20,14 @@ class ProductController extends Controller
 
         return $this->repository->front_index();
     }
+
+    public function show($code,$name)
+    {
+        return $this->repository->front_show($code);
+    }
+
+    public function comments($code)
+    {
+        return $this->repository->front_comments($code);
+    }
 }

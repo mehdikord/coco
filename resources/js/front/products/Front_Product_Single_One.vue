@@ -27,22 +27,22 @@ export default defineComponent({
             <button class="product-wish wish">
                 <i class="fas fa-heart font-20"></i>
             </button>
-            <a class="product-image " >
+            <router-link :to="{name : 'product',params : { code : product.code , name:product.name }}" class="product-image">
                 <img v-if="product.image" :src="product.image.image" alt="product" />
                 <img v-else src="/front/images/coffee2.png" alt="product" />
-            </a>
+            </router-link>
 
         </div>
         <div class="product-content">
             <h6 class="product-name">
-                {{product.name}}
+                <router-link :to="{name : 'product',params : { code : product.code , name:product.name }}">
+                    {{product.name}}
+                </router-link>
             </h6>
             <div class="product-rating">
-                <i class="active icofont-star"></i>
-                <i class="active icofont-star"></i>
-                <i class="active icofont-star"></i>
-                <i class="active icofont-star"></i>
-                <i class="icofont-star"></i>
+                <template v-if="product.rate">
+                    <i v-for="i in 5" class="icofont-star" :class="{'active' : i <= product.rate}"></i>
+                </template>
             </div>
             <h6 class="product-price mt-2">
                 <span>{{this.$filters.numbers(product.price)}}<small></small></span>

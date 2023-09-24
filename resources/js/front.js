@@ -10,7 +10,7 @@ import 'quasar/dist/quasar.css';
 import Helper from "./helpers/Helper";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import Front_Global_Loading_Infinite from "./front/globals/Front_Global_Loading_Infinite.vue";
-
+import moment from 'moment-jalaali';
 const App=createApp(Front_Template);
 App.use(Quasar, {
     plugins: {
@@ -145,9 +145,9 @@ App.component("global_loading_infinite",Front_Global_Loading_Infinite)
 // ++++++++++ Global Filters ++++++++++
 
 App.config.globalProperties.$filters = {
-    // date(value,format) {
-    //     return moment(value).format(format='jYYYY/jM/jD')
-    // },
+    date(value,format) {
+        return moment(value).format(format='jYYYY/jM/jD')
+    },
     numbers(number){
         return new Intl.NumberFormat().format(number);
     },

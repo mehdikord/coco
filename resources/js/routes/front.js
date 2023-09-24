@@ -17,7 +17,7 @@ const routes = [
         component : Front_Shop_Index,
     },
     {
-        path : "/product",
+        path : "/product/:code/:name",
         name : "product",
         component : Front_Product_Page,
     },

@@ -22,5 +22,9 @@ interface ProductsInterface
 
     public function front_index();
 
+    public function front_show($item);
+
+    public function front_comments($item);
+
 
 }

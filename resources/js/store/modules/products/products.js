@@ -90,6 +90,24 @@ export default {
                     reject(error);
                 })
             } )
+        },
+        ProductsFrontShow(_,item){
+            return new Promise((resolve,reject) => {
+                axios.get('products/'+item.code+'/'+item.name).then((result) => {
+                    resolve(result);
+                }).catch(error => {
+                    reject(error);
+                })
+            } )
+        },
+        ProductsFrontComments(_,item){
+            return new Promise((resolve,reject) => {
+                axios.get('products/comments/'+item).then((result) => {
+                    resolve(result);
+                }).catch(error => {
+                    reject(error);
+                })
+            } )
         }
 
 
