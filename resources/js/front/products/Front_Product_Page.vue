@@ -154,6 +154,14 @@
 
                                 <div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
                                 <q-btn v-if="!this.CartProductCheck(product.id)" @click="this.CartAdd(product,1)"  color="success" icon-right="fas fa-cart-arrow-down" class="w-100 pt-2 pb-2" title="افزودن این محصول به سبد خرید"> افرودن به سبد خرید</q-btn>
+                                <div v-else class="product-action">
+                                    <button @click="this.CartReduce(product.id)" title="کم کردن تعداد">
+                                        <i  class="icofont-minus text-dark">
+                                        </i>
+                                    </button>
+                                    <input class="font-18" title="افزودن تعداد" type="number" :value="this.CartProductQuantity(product.id)">
+                                    <button @click="this.CartAdd(product,1)" title="Quantity Plus"><i class="icofont-plus text-dark"></i></button>
+                                </div>
                                 </div>
 
                                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
@@ -299,6 +307,9 @@
 </template>
 
 <style scoped>
+.product-action{
+    display: flex;
+}
 .section-heading{
     font-size: 28px;
     font-weight: 600;

@@ -7,11 +7,11 @@
         <a href="wishlist.html" title="Wishlist" class="pt-3">
             <i class="fas fa-heart font-20"></i><span>برگزیده</span><sup>0</sup>
         </a>
-        <router-link :to="{name : 'index'}" title="Home Page" class="pt-3">
+        <router-link :to="{name : 'index'}" title="Home Page" class="pt-3 text-success" >
             <i class="fas fa-home font-20"></i><span>کوکوکافی</span>
         </router-link>
         <button class="cate-btn pt-3" title="Category List">
-            <i class="fas fa-list font-20"></i><span>دسته‌بندی</span>
+            <i class="fas fa-shopping-cart font-20"></i><span>محصولات</span>
         </button>
         <button class="cart-btn pt-3" title="Cartlist">
             <i class="fas fa-shopping-basket font-20"></i><span>سبد‌خرید</span><sup>9+</sup>

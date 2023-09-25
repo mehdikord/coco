@@ -3,7 +3,7 @@
         <div class="container">
             <div class="">
                 <h1 class="title">لیست محصولات کوکوکافی</h1>
-                {{this.$route.query}}
+
             </div>
             <div class="row content-reverse mt-3 sm-hide xs-hide">
 
@@ -81,7 +81,7 @@
             <div class="row xl-hide lg-hide md-hide">
                 <div class="col-12">
                     <q-btn @click="filter_dialog = true" color="blue-grey-9" icon="fas fa-list" class="font-13" flat>فیلتر ها</q-btn>
-                    <q-dialog v-model="filter_dialog">
+                    <q-dialog persistent v-model="filter_dialog">
                         <q-card>
                             <q-card-section >
                                 <h6 class="font-16 ">فیلتر ها</h6>
@@ -91,7 +91,7 @@
                             <q-card-section style="max-height: 65vh" class="scroll">
                                 <filter_price></filter_price>
                                 <q-separator />
-                                <filter_category></filter_category>
+                                <filter_category @Filter="(val) => CatFilter(val)"></filter_category>
                                 <q-separator />
                                 <filter_brand></filter_brand>
                                 <q-separator/>
@@ -99,8 +99,7 @@
                             </q-card-section>
                             <q-separator />
                             <q-card-section class="text-center">
-                                <q-btn flat color="dark" size="sm" class="font-12" icon-right="fas fa-times">حذف فیلترها</q-btn>
-                                <q-btn flat color="success" size="sm" class="font-12" icon-right="fas fa-check">اعمال فیلتر </q-btn>
+                                <q-btn flat color="dark" size="sm" @click="filter_dialog=false"  class="font-12" icon-right="fas fa-times">بستن</q-btn>
 
                             </q-card-section>
                         </q-card>
@@ -129,8 +128,8 @@
                     <hr>
 
                 </div>
-                <div v-for="i in 2" class="col-12 p-1">
-                    <product_single_two></product_single_two>
+                <div v-for="item in items" class="col-12">
+                    <product_single_two :product="item"></product_single_two>
                 </div>
 
             </div>
