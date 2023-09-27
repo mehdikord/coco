@@ -16,9 +16,9 @@
                 <a href="index.html" class="header-logo">
                     <img src="/front/images/logo.png" alt="logo">
                 </a>
-                <a href="login.html" class="header-widget" title="My Account">
+                <router-link :to="{name : 'auth'}" class="header-widget" title="My Account">
                     <img src="/front/images/user.png" alt="user"><span>حساب کاربری</span>
-                </a>
+                </router-link>
                 <form class="header-form">
                     <input type="text" placeholder="جستجو در محصولات ...">
                     <button><i class="fas fa-search"></i></button>

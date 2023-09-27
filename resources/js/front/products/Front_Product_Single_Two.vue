@@ -5,17 +5,17 @@
             <div class="feature-label">
 <!--                <label class="label-text feat">پیشنهاد ما</label>-->
             </div>
-            <a class="feature-image" >
+            <router-link :to="{name : 'product',params : { code : product.code , name:product.name }}" class="feature-image" >
                 <img v-if="product.image" :src="product.image.image" alt="product">
                 <img v-else src="/front/images/coffee2.png" alt="product" />
 
-            </a>
+            </router-link>
         </div>
         <div class="feature-content text-left">
             <h6 class="product-name">
-                <a href="">
+                <router-link :to="{name : 'product',params : { code : product.code , name:product.name }}">
                     {{product.name}}
-                </a>
+                </router-link>
             </h6>
             <div class="product-rating float-left">
                 <i class="active icofont-star"></i>

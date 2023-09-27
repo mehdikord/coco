@@ -4,6 +4,7 @@ import test from "../front/test.vue";
 import Front_Shop_Index from "../front/shop/Front_Shop_Index.vue";
 import Front_Product_Page from "../front/products/Front_Product_Page.vue";
 import Front_Profile_Index from "../front/profile/Front_Profile_Index.vue";
+import Front_Auth from "../front/auth/Front_Auth.vue";
 
 const routes = [
     {
@@ -22,11 +23,6 @@ const routes = [
         component : Front_Product_Page,
     },
     {
-        path : "/profile",
-        name : "profile",
-        component : Front_Profile_Index,
-    },
-    {
         path : "/profile/orders",
         name : "profile_orders",
         component : Front_Profile_Index,
@@ -34,6 +30,16 @@ const routes = [
     {
         path : "/profile/orders/:code",
         name : "profile_orders_detail",
+        component : Front_Profile_Index,
+    },
+    {
+        path : "/auth",
+        name : "auth",
+        component : Front_Auth,
+    },
+    {
+        path : "/profile",
+        name : "profile",
         component : Front_Profile_Index,
     },
 
