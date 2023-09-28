@@ -11,6 +11,9 @@ import Helper from "./helpers/Helper";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import Front_Global_Loading_Infinite from "./front/globals/Front_Global_Loading_Infinite.vue";
 import moment from 'moment-jalaali';
+import VueSweetalert2 from 'vue-sweetalert2';
+import '@sweetalert2/theme-bulma/bulma.css';
+
 const App=createApp(Front_Template);
 App.use(Quasar, {
     plugins: {
@@ -33,66 +36,59 @@ App.use(Quasar, {
 })
 App.use(Store)
 App.use(Front)
+App.use(VueSweetalert2);
+
 window.Helper = Helper
 
 // ++++++++++ Global Functions (Mixin) ++++++++++
 
 App.mixin({
     beforeCreate() {
-        this.$store.commit('AuthManageSync');
+        this.$store.commit('AuthUserSync');
         this.$store.commit('CartGetFromStorage');
     },
     created() {
-
         axios.defaults.headers.common['Authorization'] ="Bearer "+this.AuthToken
+
 
     },
     //Methods
     methods:{
-        NotifyMessage(message=null,type=null,icon=null,color=null){
-            if (icon || color){
-                this.$q.notify({
-                    type: type,
-                    message: message,
-                    icon : icon,
-                    color : color,
-                    progress : true,
-                    position: "bottom"
 
-                });
-            }else {
-                this.$q.notify({
-                    type: type,
-                    iconSize:'md',
-                    message: message,
-                    progress : true,
-                    position: "bottom"
-                });
-            }
+
+
+
+        NotifyMessage(message=null,type='info'){
+            this.$swal({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', this.$swal.stopTimer)
+                    toast.addEventListener('mouseleave', this.$swal.resumeTimer)
+                },
+                icon:type,
+                text:message
+
+            });
         },
-        NotifyCreate(){
-            this.NotifyMessage('آیتم باموفقیت ایجاد شد','positive')
-        },
-        NotifyUpdate(){
-            this.NotifyMessage('آیتم باموفقیت ویرایش شد','positive')
-        },
-        NotifyDelete(){
-            this.NotifyMessage('آیتم باموفقیت حذف شد','positive')
-        },
+
         NotifyServerError(){
             this.NotifyError('خطای سرور !');
         },
         NotifySuccess(message){
-            this.NotifyMessage(message,'positive')
+            this.NotifyMessage(message,'success')
         },
         NotifyWarning(message){
             this.NotifyMessage(message,'warning')
         },
         NotifyError(message){
-            this.NotifyMessage(message,'negative')
+            this.NotifyMessage(message,'error')
         },
         NotifyInfo(message){
-            this.NotifyMessage(message,'','mdi-bell','indigo')
+            this.NotifyMessage(message,'info')
         },
         MixinValidation(errors,field){
             return Helper.HelperValidationErrors(errors,field);
@@ -121,7 +117,7 @@ App.mixin({
     },
     computed : {
         ...mapGetters({
-            AuthToken: "AuthManageUser",
+            AuthToken: "AutUserToken",
             CartProductCheck : "CartProductCheck",
             CartProductQuantity : "CartProductQuantity",
             CartItemCount : "CartItemCount",
@@ -166,6 +162,28 @@ App.config.globalProperties.$filters = {
             extra = "..."
         }
         return text.substring(0,len) + extra;
+    },
+    persianDigitsToEnglish(persianNumber) {
+        const persianDigits = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+        const englishDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        if (!persianNumber){
+            return persianNumber;
+        }
+        const persianNumberStr = persianNumber.toString();
+        let englishNumberStr = "";
+
+        for (let i = 0; i < persianNumberStr.length; i++) {
+            const digit = persianNumberStr[i];
+            const digitIndex = persianDigits.indexOf(digit);
+
+            if (digitIndex !== -1) {
+                englishNumberStr += englishDigits[digitIndex];
+            } else {
+                englishNumberStr += digit;
+            }
+        }
+
+        return englishNumberStr;
     }
 }
 

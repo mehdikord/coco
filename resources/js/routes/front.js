@@ -5,6 +5,8 @@ import Front_Shop_Index from "../front/shop/Front_Shop_Index.vue";
 import Front_Product_Page from "../front/products/Front_Product_Page.vue";
 import Front_Profile_Index from "../front/profile/Front_Profile_Index.vue";
 import Front_Auth from "../front/auth/Front_Auth.vue";
+import store from "../store";
+import Front_Shop_Checkout from "../front/shop/Front_Shop_Checkout.vue";
 
 const routes = [
     {
@@ -42,6 +44,11 @@ const routes = [
         name : "profile",
         component : Front_Profile_Index,
     },
+    {
+        path : "/checkout",
+        name : "checkout",
+        component : Front_Shop_Checkout,
+    },
 
 
 ]
@@ -54,7 +61,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-
+    if (to.path === '/auth' && store.getters.AuthUserCheck){
+        next('/profile');
+    }
+    if (to.path === '/profile' && !store.getters.AuthUserCheck){
+        next('/auth');
+    }
     next();
 
     setTimeout(() => {

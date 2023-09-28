@@ -2,11 +2,12 @@
 <template>
 
     <div class="container">
-<!--        <div class="mt-5">-->
-<!--            <profile_auth></profile_auth>-->
-<!--        </div>-->
 
-        <div class="mt-5">
+        <div class="mt-4 mb-3">
+            <strong class="title">اطلاعات حساب کاربری</strong>
+        </div>
+
+        <div>
             <div class="row">
                 <div class="col-lg-3 p-1">
                     <div class="card bg-white">
@@ -80,8 +81,6 @@
 
             </div>
         </div>
-
-
     </div>
 </template>
 
@@ -95,6 +94,16 @@
 }
 .menu-text{
     font-weight: 500;
+}
+.title{
+    font-size: 17px;
+    font-weight: 600;
+}
+@media only screen and (max-width: 600px) {
+    .title{
+        font-size: 15px;
+        font-weight: 500;
+    }
 }
 </style>
 <script>

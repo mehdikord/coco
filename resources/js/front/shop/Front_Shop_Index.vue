@@ -3,7 +3,6 @@
         <div class="container">
             <div class="">
                 <h1 class="title">لیست محصولات کوکوکافی</h1>
-
             </div>
             <div class="row content-reverse mt-3 sm-hide xs-hide">
 

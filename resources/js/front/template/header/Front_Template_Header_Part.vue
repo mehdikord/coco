@@ -6,19 +6,24 @@
                     <button class="header-user">
                         <img src="/front/images/user.png" alt="user">
                     </button>
-                    <a href="index.html">
+                    <router-link :to="{name:'index'}">
                         <img src="/front/images/logo.png" alt="logo">
-                    </a>
+                    </router-link>
                     <button class="header-src">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-                <a href="index.html" class="header-logo">
+                <router-link :to="{name : 'index'}" class="header-logo">
                     <img src="/front/images/logo.png" alt="logo">
-                </a>
-                <router-link :to="{name : 'auth'}" class="header-widget" title="My Account">
+                </router-link>
+
+                <router-link v-if="AuthUserCheck" :to="{name : 'profile'}" class="header-widget" title="My Account">
+                    <img src="/front/images/user.png" alt="user"><span class="name-bold">{{AuthUserUser.name}}</span>
+                </router-link>
+                <router-link v-else :to="{name : 'auth'}" class="header-widget" title="My Account">
                     <img src="/front/images/user.png" alt="user"><span>حساب کاربری</span>
                 </router-link>
+
                 <form class="header-form">
                     <input type="text" placeholder="جستجو در محصولات ...">
                     <button><i class="fas fa-search"></i></button>
@@ -47,16 +52,26 @@
 </template>
 
 <style scoped>
-
+.name-bold{
+    font-weight: 600;
+}
 </style>
 <script>
 import {defineComponent} from 'vue'
 import Front_Template_Header_Cart from "./Front_Template_Header_Cart.vue";
+import {mapGetters} from "vuex";
 
 export default defineComponent({
     name: "Front_Template_Header_Part",
     components : {
         'header_cart' : Front_Template_Header_Cart,
+    },
+    computed:{
+        ...mapGetters([
+            "AuthUserCheck",
+            "AuthUserUser"
+        ])
+
     }
 })
 </script>
