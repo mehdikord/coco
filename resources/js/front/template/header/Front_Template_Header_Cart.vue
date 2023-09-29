@@ -25,11 +25,10 @@
                     <span>ثبت کد</span>
                 </button>
             </form>
-            <a class="cart-checkout-btn pointer" :class="{'bg-dark cursor-not-allowed' : this.CartTotalProducts < 1}" >
+            <router-link :to="{'name' : 'checkout'}" class="cart-checkout-btn pointer" :class="{'bg-dark cursor-not-allowed' : this.CartTotalProducts < 1}" >
                 <span class="checkout-label">ثبت نهایی سفارشات</span>
                 <span class="checkout-price">{{this.$filters.numbers(this.CartTotalPrice) }} </span><span class="checkout-price font-14">تومان</span>
-
-            </a>
+            </router-link>
         </div>
     </aside>
 
