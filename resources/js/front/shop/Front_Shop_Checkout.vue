@@ -6,6 +6,11 @@ import {mapGetters} from "vuex";
 
 export default {
     name: "Front_Shop_Checkout",
+    mounted() {
+      if (!this.AuthUserCheck){
+
+      }
+    },
     components: {
         'cart_single_two' : Front_Cart_Single_Two,
     },
@@ -25,9 +30,11 @@ export default {
             </div>
             <template v-if="this.CartTotalProducts > 0">
                 <div class="row">
-                    <div class="col-md-12 ">
-                        <q-banner class="bg-yellow-10">
-
+                    <div v-if="!AuthUserCheck" class="col-md-12 q-px-md q-mb-md">
+                        <q-banner class="bg-deep-orange rounded text-center text-white">
+                            <strong>برای تکمیل و ثبت سفارش شما باید ابتدا وارد حساب کاربری خود شوید، برای ورود یا ثبت نام
+                            <router-link :to="{name : 'auth'}" class="text-white">اینجا را کلیک کنید</router-link>
+                            </strong>
                         </q-banner>
                     </div>
                     <div class="col-md-9 q-px-xs">
@@ -62,6 +69,7 @@ export default {
                                 </div>
                                 <q-separator class="mt-3 mb-3" />
                                 <div class="text-center">
+                                    <div v-if="!AuthUserCheck" class="text-danger mb-2">برای ادامه وارد حساب کاربری خود شوید</div>
                                     <q-btn color="green-6" class="w-100 font-16"  glossy :disable="!AuthUserCheck">ثبت سفارش و پرداخت</q-btn>
                                 </div>
 
