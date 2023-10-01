@@ -22,7 +22,7 @@ Route::prefix('products')->group(function (){
 
 Route::get('',[\App\Http\Controllers\Front\ProductController::class,'index']);
 Route::get('comments/{code}',[\App\Http\Controllers\Front\ProductController::class,'comments']);
-Route::get('{code}/{name}',[\App\Http\Controllers\Front\ProductController::class,'show']);
+Route::get('{code}/{name}',[\App\Http\Controllers\Front\ProductController::class,'show'])->where('name','(.*)');;
 
 
 });
