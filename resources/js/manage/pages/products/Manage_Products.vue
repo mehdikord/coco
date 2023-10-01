@@ -239,6 +239,7 @@
                 :columns="item_columns"
                 color="indigo"
                 table-header-class="text-indigo"
+                :pagination="{rowsPerPage:30}"
                 :loading="loading_get"
             >
                 <template v-slot:loading>
