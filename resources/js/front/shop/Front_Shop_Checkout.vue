@@ -8,7 +8,9 @@ export default {
     name: "Front_Shop_Checkout",
     mounted() {
       if (!this.AuthUserCheck){
-
+          localStorage.setItem('back_url','checkout');
+      }else {
+          localStorage.removeItem('back_url');
       }
     },
     components: {

@@ -95,6 +95,9 @@ export default {
                 this.Auth_User_Login(res.data.result)
                 localStorage.removeItem('coco_login_phone')
                 this.NotifySuccess('باموفقیت وارد حساب کاربریتان شدید');
+                if (localStorage.getItem('back_url')){
+                    return this.$router.push({name:localStorage.getItem('back_url')})
+                }
                 return this.$router.push({name:'index'})
 
             }).catch(error => {
