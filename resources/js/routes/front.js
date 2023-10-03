@@ -45,11 +45,15 @@ const routes = [
         component : Front_Profile_Index,
     },
     {
-        path : "/checkout",
-        name : "checkout",
+        path : "/checkout/cart",
+        name : "checkout_cart",
         component : Front_Shop_Checkout,
     },
-
+    {
+        path : "/checkout/shipping",
+        name : "checkout_shipping",
+        component : Front_Shop_Checkout,
+    },
 
 ]
 

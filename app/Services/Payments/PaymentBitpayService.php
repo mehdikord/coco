@@ -2,7 +2,6 @@
 namespace App\Services\Payments;
 
 use App\Models\Gateway;
-use http\Url;
 
 class PaymentBitpayService {
 

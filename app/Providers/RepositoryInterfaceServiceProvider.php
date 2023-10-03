@@ -6,6 +6,7 @@ use App\Interfaces\Auth\AuthInterface;
 use App\Interfaces\Brands\BrandsInterface;
 use App\Interfaces\Categories\CategoriesInterface;
 use App\Interfaces\Faqs\FaqsInterface;
+use App\Interfaces\Helper\HelperInterface;
 use App\Interfaces\Products\ProductsInterface;
 use App\Interfaces\Profile\ProfileInterface;
 use App\Interfaces\Slider\SliderInterface;
@@ -14,6 +15,7 @@ use App\Repository\Auth\AuthRepository;
 use App\Repository\Brands\BrandsRepository;
 use App\Repository\Categories\CategoriesRepository;
 use App\Repository\Faqs\FaqsRepository;
+use App\Repository\Helper\HelperRepository;
 use App\Repository\Products\ProductsRepository;
 use App\Repository\Profile\ProfileRepository;
 use App\Repository\Slider\SliderRepository;
@@ -35,6 +37,7 @@ class RepositoryInterfaceServiceProvider extends ServiceProvider
         $this->app->bind(CategoriesInterface::class,CategoriesRepository::class);
         $this->app->bind(ProductsInterface::class,ProductsRepository::class);
         $this->app->bind(SliderInterface::class,SliderRepository::class);
+        $this->app->bind(HelperInterface::class,HelperRepository::class);
 
     }
 

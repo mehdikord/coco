@@ -55,9 +55,6 @@ App.mixin({
     //Methods
     methods:{
 
-
-
-
         NotifyMessage(message=null,type='info'){
             this.$swal({
                 toast: true,
@@ -112,7 +109,6 @@ App.mixin({
             this.NotifySuccess('از سبد حذف شد');
 
         }
-
 
     },
     computed : {
