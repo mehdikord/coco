@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{asset('front/css/home-grid.css')}}">
     <link rel="stylesheet" href="{{asset('front/css/index.css')}}">
     <link rel="stylesheet" href="{{asset('front/css/product-details.css')}}">
+    <link rel="stylesheet" href="{{asset('front/css/animations.css')}}">
+
 
     @vite(['resources/js/front.js'])
 </head>

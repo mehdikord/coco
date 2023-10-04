@@ -2,7 +2,7 @@
 
 
 import Front_Cart_Single_Two from "../cart/Front_Cart_Single_Two.vue";
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
     name: "Front_Shop_Checkout",
@@ -21,6 +21,8 @@ export default {
     data(){
         return{
             DialogAddAddress : false,
+            addresses:[],
+            addresses_loading:true,
             provinces:[],
             provinces_select:[],
             cities_select:[],
@@ -34,6 +36,14 @@ export default {
         }
     },
     methods : {
+        ...mapActions([
+            "UserAddressIndex",
+            "UserAddressStore",
+
+        ]),
+        GetAddresses(){
+
+        },
         GetProvinces(){
             axios.get('/helper/provinces').then(res =>{
                 this.provinces = res.data.result;
@@ -169,9 +179,13 @@ export default {
                                             </q-card-section>
                                         </q-card>
                                     </q-dialog>
-
                                 </div>
-                                <div class="row mt-4">
+
+                                <global_loading_address class="mt-2" v-if="addresses_loading"></global_loading_address>
+
+                                <div v-else class="row mt-4">
+
+
 
                                 </div>
                             </div>
@@ -206,7 +220,7 @@ export default {
             </template>
             <template v-else>
                 <div class="text-center mt-5">
-                    <img src="/front/images/cart-empty.png" alt="" width="200">
+                    <img src="/front/images/cart-empty.png"  alt="" width="200">
                     <div class="mt-4 font-15">
                         <strong>سبد خرید شما خالی است برای مشاهده محصولات به فروشگاه بروید</strong>
                     </div>
@@ -218,6 +232,9 @@ export default {
 </template>
 
 <style scoped>
+
+
+
 .dialog-width{
     max-width: 1024px;
     width: 900px;

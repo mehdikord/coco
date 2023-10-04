@@ -7,6 +7,7 @@ import categories from "./modules/categories/categories";
 import products from "./modules/products/products";
 import slider from "./modules/slider/slider";
 import cart from "./modules/cart/cart";
+import user from "./modules/user/user";
 const store = createStore({
     state(){
         return {
@@ -25,6 +26,7 @@ const store = createStore({
         products,
         slider,
         cart,
+        user
 
     },
 

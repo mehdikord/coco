@@ -89,6 +89,16 @@ class UsersRepository implements UsersInterface
 
     //Users
 
+    public function user_address_index()
+    {
+
+    }
+
+    public function user_address_store($request)
+    {
+
+    }
+
 
 
 
