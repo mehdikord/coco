@@ -184,9 +184,7 @@ export default defineComponent({
         return{
             filter_dialog : false,
             sort_dialog : false,
-            options: [
-                'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-            ],
+
             loading:true,
             params:[],
             links:[],

@@ -14,6 +14,7 @@ import moment from 'moment-jalaali';
 import VueSweetalert2 from 'vue-sweetalert2';
 import '@sweetalert2/theme-bulma/bulma.css';
 import Front_Global_Loading_Address from "./front/globals/Front_Global_Loading_Address.vue";
+import Front_Errors_Validation from "./front/errors/Front_Errors_Validation.vue";
 
 const App=createApp(Front_Template);
 App.use(Quasar, {
@@ -134,6 +135,7 @@ App.mixin({
 
 App.component("global_loading_infinite",Front_Global_Loading_Infinite)
 App.component("global_loading_address",Front_Global_Loading_Address)
+App.component("errors_validation",Front_Errors_Validation)
 // ++++++++++++++++++++
 
 // ++++++++++ Global Filters ++++++++++

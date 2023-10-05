@@ -10,6 +10,13 @@ export default {
         'cart_single_two' : Front_Cart_Single_Two,
 
     },
+    watch :{
+        $route(to , from){
+            if (to.name !== from.name){
+                this.GetAddresses();
+            }
+        }
+    },
     mounted() {
       if (!this.AuthUserCheck){
           localStorage.setItem('back_url','checkout');
@@ -17,12 +24,14 @@ export default {
           localStorage.removeItem('back_url');
       }
       this.GetProvinces();
+      this.GetAddresses();
     },
     data(){
         return{
             DialogAddAddress : false,
             addresses:[],
             addresses_loading:true,
+            addresses_add_loading:false,
             provinces:[],
             provinces_select:[],
             cities_select:[],
@@ -32,7 +41,8 @@ export default {
                 title:null,
                 postal_code:null,
                 address:null,
-            }
+            },
+            errors:[],
         }
     },
     methods : {
@@ -42,6 +52,27 @@ export default {
 
         ]),
         GetAddresses(){
+            this.UserAddressIndex().then(res => {
+                this.addresses = res.data.result;
+                this.addresses_loading=false;
+            }).catch(error => {
+                return this.NotifyServerError();
+            })
+
+        },
+        AddAddress(){
+            this.addresses_add_loading=true;
+            this.UserAddressStore(this.add_address).then(res =>{
+                this.addresses.unshift(res.data.result);
+                this.DialogAddAddress=false;
+                return this.NotifySuccess(res.data.message)
+            }).catch(error => {
+                this.addresses_add_loading=false;
+                if (error.response.status === 422) {
+                    return this.errors = error.response.data
+                }
+                return this.NotifyServerError();
+            });
 
         },
         GetProvinces(){
@@ -88,7 +119,6 @@ export default {
                 <q-icon name="fas fa-long-arrow-alt-left font-20" class="me-2 ms-2" color="dark"/>
                 <q-icon name="fas fa-truck fa-flip-horizontal font-20"  class="ms-2 text-grey-7" :class="{'shipping_head' : this.$route.name === 'checkout_shipping'}"/>
                 <strong class="title text-grey-7" :class="{'shipping_head' : this.$route.name === 'checkout_shipping'}">انتخاب نحوه ارسال</strong>
-
             </div>
             <template v-if="this.CartTotalProducts > 0">
                 <div class="row">
@@ -147,46 +177,77 @@ export default {
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <label class="form-label text-teal-8">انتخاب استان</label>
-                                                        <select class="form-control" v-model="add_address.province_id" @change="GetCities">
+                                                        <select class="form-control" v-model="add_address.province_id" @change="GetCities" :class="{'is-invalid' : this.MixinValidationCheck(errors,'province_id')}">
                                                             <option v-for="province in provinces_select" :value="province.value">{{province.label}}</option>
                                                         </select>
+                                                        <errors_validation :errors="this.MixinValidation(errors,'province_id')"></errors_validation>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label class="form-label text-teal-8">انتخاب شهر</label>
-                                                        <select class="form-control" v-model="add_address.city_id" :disabled="!add_address.province_id" >
+                                                        <select class="form-control" v-model="add_address.city_id" :disabled="!add_address.province_id" :class="{'is-invalid' : this.MixinValidationCheck(errors,'city_id')}">
                                                             <option v-for="city in cities_select" :value="city.value">{{city.label}}</option>
                                                         </select>
+                                                        <errors_validation :errors="this.MixinValidation(errors,'city_id')"></errors_validation>
                                                     </div>
                                                     <div class="col-md-6 mt-3">
                                                         <label class="form-label text-teal-8">عنوان آدرس</label>
-                                                        <input class="form-control" type="text" v-model="add_address.title" placeholder="مثال : محل کارم">
+                                                        <input class="form-control" type="text" v-model="add_address.title" placeholder="مثال : محل کارم" :class="{'is-invalid' : this.MixinValidationCheck(errors,'title')}">
+                                                        <errors_validation :errors="this.MixinValidation(errors,'title')"></errors_validation>
+
                                                     </div>
                                                     <div class="col-md-6 mt-3">
                                                         <label class="form-label text-teal-8"> کد پستی</label>
-                                                        <input class="form-control" type="text" v-model="add_address.postal_code" placeholder="کد پستی ده رقمی">
+                                                        <input class="form-control " type="text" v-model="add_address.postal_code" placeholder="کد پستی ده رقمی" :class="{'is-invalid' : this.MixinValidationCheck(errors,'postal_code')}">
+                                                        <errors_validation :errors="this.MixinValidation(errors,'postal_code')"></errors_validation>
+
                                                     </div>
                                                     <div class="col-md-12 mt-4">
                                                         <label class="form-label text-teal-8"> آدرس کامل</label>
-                                                        <textarea style="height: 100px" class="form-control" rows="7" v-model="add_address.address" placeholder="مثال : بلوار ولیعصر - کوچه عدالت 14 ساختمان ...">
+                                                        <textarea style="height: 100px" class="form-control" rows="7" v-model="add_address.address" placeholder="مثال : بلوار ولیعصر - کوچه عدالت 14 ساختمان ..." :class="{'is-invalid' : this.MixinValidationCheck(errors,'address')}">
                                                         </textarea>
+                                                        <errors_validation :errors="this.MixinValidation(errors,'address')"></errors_validation>
                                                     </div>
 
                                                 </div>
                                                 <div class="mt-4 mb-1 text-right">
                                                     <q-btn v-close-popup color="red" glossy class="font-13">بستن</q-btn>
-                                                    <q-btn color="teal" glossy class="font-13 me-2">افزودن آدرس جدید</q-btn>
+                                                    <q-btn @click="AddAddress" :loading="addresses_add_loading" color="teal" glossy class="font-13 me-2">افزودن آدرس جدید</q-btn>
                                                 </div>
                                             </q-card-section>
                                         </q-card>
                                     </q-dialog>
                                 </div>
 
-                                <global_loading_address class="mt-2" v-if="addresses_loading"></global_loading_address>
+                                <global_loading_address class="mt-3" v-if="addresses_loading"></global_loading_address>
+
 
                                 <div v-else class="row mt-4">
-
-
-
+                                    <div v-if="!addresses.length" class="col-12">
+                                        <div class="text-center">
+                                            <q-img src="/front/images/folder-empty.png" width="75px" />
+                                            <div class="mt-1">
+                                                <strong class="text-red-5">شما هنوز هیچ آدرسی ثبت نکرده اید</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <template v-else>
+                                        <div v-for="address in addresses" class="col-md-12">
+                                            <div class="card rounded">
+                                                <div class="card-body">
+                                                    <div class="">
+                                                        <q-icon name="fas fa-city" class="ms-2"></q-icon>
+                                                        <span v-if="address.city">{{address.city.name}}</span>
+                                                    </div>
+                                                    <div class="mt-1">
+                                                        <strong class="text-dark">{{address.title}}</strong>
+                                                    </div>
+                                                    <div class="mt-1">
+                                                        {{address.address}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
                         </div>

@@ -91,11 +91,19 @@ class UsersRepository implements UsersInterface
 
     public function user_address_index()
     {
-
+        return response_success(auth('users')->user()->address()->with('province')->with('city')->get());
     }
 
     public function user_address_store($request)
     {
+        $address = auth('users')->user()->address()->create([
+            'province_id' => $request->province_id,
+            'city_id' => $request->city_id,
+            'title' =>$request->title,
+            'postal_code' => $request->postal_code,
+            'address' => $request->address,
+        ]);
+        return response_success($address,'آدرس جدید باموفقیت اضافه شد');
 
     }
 
