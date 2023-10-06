@@ -7,6 +7,7 @@ use App\Interfaces\Users\UsersInterface;
 use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use function Sodium\add;
 
 class UsersRepository implements UsersInterface
 {
@@ -103,6 +104,7 @@ class UsersRepository implements UsersInterface
             'postal_code' => $request->postal_code,
             'address' => $request->address,
         ]);
+        $address->load('city');
         return response_success($address,'آدرس جدید باموفقیت اضافه شد');
 
     }

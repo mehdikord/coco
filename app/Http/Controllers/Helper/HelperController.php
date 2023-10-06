@@ -18,4 +18,9 @@ class HelperController extends Controller
     {
         return $this->repository->provinces();
     }
+
+    public function shipping()
+    {
+        return $this->repository->shipping();
+    }
 }

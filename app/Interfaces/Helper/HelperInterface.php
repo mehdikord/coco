@@ -5,5 +5,7 @@ interface HelperInterface
 {
     public function provinces();
 
+    public function shipping();
+
 
 }

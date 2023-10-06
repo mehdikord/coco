@@ -29,6 +29,7 @@ Route::get('brands',[\App\Http\Controllers\Front\BrandController::class,'index']
 
 Route::prefix('helper')->group(function (){
     Route::prefix('shopping')->group(function (){
+        Route::get('shipping',[\App\Http\Controllers\Helper\HelperController::class,'shipping']);
 
     });
 

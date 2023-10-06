@@ -14,6 +14,7 @@ export default {
         $route(to , from){
             if (to.name !== from.name){
                 this.GetAddresses();
+                this.GetShipping();
             }
         }
     },
@@ -25,11 +26,15 @@ export default {
       }
       this.GetProvinces();
       this.GetAddresses();
+      this.GetShipping();
     },
     data(){
         return{
             DialogAddAddress : false,
             addresses:[],
+            shipping:[],
+            address_selected:null,
+            shipping_selected:null,
             addresses_loading:true,
             addresses_add_loading:false,
             provinces:[],
@@ -54,6 +59,9 @@ export default {
         GetAddresses(){
             this.UserAddressIndex().then(res => {
                 this.addresses = res.data.result;
+                if (res.data.result.length){
+                    this.address_selected = res.data.result[0];
+                }
                 this.addresses_loading=false;
             }).catch(error => {
                 return this.NotifyServerError();
@@ -81,6 +89,16 @@ export default {
                 this.provinces.forEach(province => {
                     this.provinces_select.push({label : province.name , value : province.id})
                 })
+            })
+        },
+        GetShipping(){
+            axios.get('/helper/shopping/shipping').then(res =>{
+                this.shipping = res.data.result;
+                if (res.data.result.length){
+                    this.shipping_selected = res.data.result[0];
+                }
+            }).catch(error => {
+                return this.NotifyServerError();
             })
         },
 
@@ -148,7 +166,7 @@ export default {
                         <div v-if="this.$route.name === 'checkout_shipping' && AuthUserCheck" class="card">
                             <div class="card-body">
                                 <div>
-                                    <strong class="text-indigo">اطلاعات دریافت کننده : </strong>
+                                    <strong class="text-indigo font-15">اطلاعات دریافت کننده : </strong>
                                 </div>
                                 <div class="row mt-4">
                                     <div class="col-md-4">
@@ -166,7 +184,7 @@ export default {
                                 </div>
                                 <q-separator class="mt-4 mb-4" color="grey-5" />
                                 <div>
-                                    <strong class="text-indigo">انتخاب آدرس ارسال : </strong>
+                                    <strong class="text-indigo font-15">انتخاب آدرس ارسال : </strong>
                                     <q-btn @click="DialogAddAddress = true" glossy color="indigo" icon="fas fa-plus" class="float-start font-13">افزودن آدرس</q-btn>
                                     <q-dialog v-model="DialogAddAddress">
                                         <q-card class="dialog-width">
@@ -217,10 +235,7 @@ export default {
                                         </q-card>
                                     </q-dialog>
                                 </div>
-
                                 <global_loading_address class="mt-3" v-if="addresses_loading"></global_loading_address>
-
-
                                 <div v-else class="row mt-4">
                                     <div v-if="!addresses.length" class="col-12">
                                         <div class="text-center">
@@ -231,15 +246,16 @@ export default {
                                         </div>
                                     </div>
                                     <template v-else>
-                                        <div v-for="address in addresses" class="col-md-12">
-                                            <div class="card rounded">
+                                        <div v-for="address in addresses" class="col-md-12 mb-3 pointer" @click="address_selected=address">
+                                            <div class="card" :class="{'shadow-8 border-success' : address_selected.id === address.id}">
                                                 <div class="card-body">
-                                                    <div class="">
-                                                        <q-icon name="fas fa-city" class="ms-2"></q-icon>
-                                                        <span v-if="address.city">{{address.city.name}}</span>
-                                                    </div>
+                                                    <q-icon name="fas fa-city" class="ms-2"></q-icon>
+                                                    <span v-if="address.city">{{address.city.name}}</span>
+                                                    <strong v-if="address_selected.id === address.id" class="float-start text-indigo">
+                                                        <q-icon name="fas fa-check-circle font-18"></q-icon>
+                                                    </strong>
                                                     <div class="mt-1">
-                                                        <strong class="text-dark">{{address.title}}</strong>
+                                                        <strong class="text-red-5">{{address.title}}</strong>
                                                     </div>
                                                     <div class="mt-1">
                                                         {{address.address}}
@@ -248,6 +264,25 @@ export default {
                                             </div>
                                         </div>
                                     </template>
+                                </div>
+                                <q-separator class="mt-4 mb-4" color="grey-5" />
+                                <div>
+                                    <q-img src="/front/images/truck.png" width="50px" class="ms-2"></q-img>
+                                    <strong class="text-indigo font-15">انتخاب روش ارسال : </strong>
+                                </div>
+                                <div class="mt-3">
+                                    <div v-for="item in shipping">
+                                        <div>
+                                            <input type="checkbox" style="transform: scale(1.3);">
+                                            <span class="me-2">ارسال از طریق : </span>
+                                            <strong class="text-dark">{{item.title}}</strong>
+                                            <span class="float-start me-1" >تومان</span>
+                                            <strong v-if="item.cost" class="float-start text-red-7">{{this.$filters.numbers(item.cost)}}</strong>
+                                        </div>
+                                        <q-separator color="grey-7" class="mt-2"/>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -258,15 +293,37 @@ export default {
                             <div class="card-body">
                                 <div>
                                     <span class="font-14 text-grey-8">قیمت کالاها <strong class="text-indigo-5">({{CartTotalProducts}})</strong></span>
-                                    <strong class="float-right text-grey-8">{{this.$filters.numbers(this.CartTotalPrice) }}</strong>
+                                    <strong class="float-right text-dark">{{this.$filters.numbers(this.CartTotalPrice) }}</strong>
                                 </div>
                                 <q-separator class="mt-3 mb-3" />
+                              <template v-if="this.$route.name === 'checkout_cart'">
+                                  <div>
+                                      <strong class="font-14 text-dark">جمع سبد خرید</strong>
+                                      <span class="float-right me-1 text-grey-7">تومان</span>
+                                      <strong class="float-right font-16 text-success">{{this.$filters.numbers(this.CartTotalPrice) }}</strong>
+                                  </div>
+                                  <q-separator class="mt-3 mb-3" />
+                              </template>
+                                <template v-if="address_selected">
+                                    <div>
+                                        <span class="font-14 text-grey-8">ارسال به :</span>
+                                        <strong class="float-right text-grey-8">{{address_selected.title}}</strong>
+                                    </div>
+                                    <q-separator class="mt-3 mb-3" />
+                                </template>
+                                <template v-if="shipping_selected">
+                                    <div>
+                                        <span class="font-14 text-grey-8">هزینه ارسال :</span>
+                                        <strong class="float-right text-dark">{{this.$filters.numbers(shipping_selected.cost) }}</strong>
+                                    </div>
+                                    <q-separator class="mt-3 mb-3" />
+                                </template>
                                 <div>
-                                    <strong class="font-14 text-dark">جمع سبد خرید</strong>
-                                    <span class="float-right me-1 text-grey-7">تومان</span>
-                                    <strong class="float-right font-16 text-success">{{this.$filters.numbers(this.CartTotalPrice) }}</strong>
+                                    <span class="font-15 text-grey-8">هزینه ارسال :</span>
+                                    <strong class="float-right text-dark"></strong>
                                 </div>
                                 <q-separator class="mt-3 mb-3" />
+
                                 <div class="text-center">
                                     <div v-if="!AuthUserCheck" class="text-danger mb-2">برای ادامه وارد حساب کاربری خود شوید</div>
                                     <q-btn v-if="this.$route.name === 'checkout_cart'" :to="{name:'checkout_shipping'}" color="green-7" class="w-100 font-16"  glossy :disable="!AuthUserCheck">ثبت سفارشات </q-btn>
