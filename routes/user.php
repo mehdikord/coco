@@ -9,12 +9,21 @@ Route::prefix('auth')->group(function (){
 
 //Enable Middleware
 Route::middleware('auth:users')->group(function (){
+
+    Route::prefix('shopping')->group(function (){
+        Route::post('start',[\App\Http\Controllers\User\Shopping\ShoppingController::class,'start']);
+
+
+    });
+
+
     Route::prefix('address')->group(function (){
         Route::get('',[\App\Http\Controllers\User\Address\AddressController::class,'index']);
         Route::post('',[\App\Http\Controllers\User\Address\AddressController::class,'store']);
         Route::post('/{address}',[\App\Http\Controllers\User\Address\AddressController::class,'update']);
         Route::delete('/{address}',[\App\Http\Controllers\User\Address\AddressController::class,'delete']);
     });
+
 
 
 

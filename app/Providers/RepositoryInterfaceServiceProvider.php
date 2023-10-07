@@ -9,6 +9,7 @@ use App\Interfaces\Faqs\FaqsInterface;
 use App\Interfaces\Helper\HelperInterface;
 use App\Interfaces\Products\ProductsInterface;
 use App\Interfaces\Profile\ProfileInterface;
+use App\Interfaces\Shopping\ShoppingInterface;
 use App\Interfaces\Slider\SliderInterface;
 use App\Interfaces\Users\UsersInterface;
 use App\Repository\Auth\AuthRepository;
@@ -18,6 +19,7 @@ use App\Repository\Faqs\FaqsRepository;
 use App\Repository\Helper\HelperRepository;
 use App\Repository\Products\ProductsRepository;
 use App\Repository\Profile\ProfileRepository;
+use App\Repository\Shopping\ShoppingRepository;
 use App\Repository\Slider\SliderRepository;
 use App\Repository\Users\UsersRepository;
 use Illuminate\Support\ServiceProvider;
@@ -38,6 +40,7 @@ class RepositoryInterfaceServiceProvider extends ServiceProvider
         $this->app->bind(ProductsInterface::class,ProductsRepository::class);
         $this->app->bind(SliderInterface::class,SliderRepository::class);
         $this->app->bind(HelperInterface::class,HelperRepository::class);
+        $this->app->bind(ShoppingInterface::class,ShoppingRepository::class);
 
     }
 

@@ -13,7 +13,9 @@ export default {
     watch :{
         $route(to , from){
             if (to.name !== from.name){
-                this.GetAddresses();
+                if (this.AuthUserCheck){
+                    this.GetAddresses();
+                }
                 this.GetShipping();
             }
         }
@@ -22,10 +24,10 @@ export default {
       if (!this.AuthUserCheck){
           localStorage.setItem('back_url','checkout');
       }else {
+          this.GetAddresses();
           localStorage.removeItem('back_url');
       }
       this.GetProvinces();
-      this.GetAddresses();
       this.GetShipping();
     },
     data(){
@@ -54,6 +56,7 @@ export default {
         ...mapActions([
             "UserAddressIndex",
             "UserAddressStore",
+            "ShoppingUserStart"
 
         ]),
         GetAddresses(){
@@ -101,6 +104,22 @@ export default {
                 return this.NotifyServerError();
             })
         },
+        ShoppingStart(){
+            if (!this.address_selected){
+                return this.NotifyError("آدرس ارسال را انتخاب کنید");
+            }
+            if (!this.shipping_selected){
+                return this.NotifyError("روش ارسال را انتخاب کنید");
+            }
+
+
+            let items = {
+                'address_id' : this.address_selected.id,
+                'shipping_id' : this.shipping_selected.id,
+                'cart' : this.CartItemGet
+            }
+            console.log(items);
+        }
 
     },
 
@@ -273,7 +292,7 @@ export default {
                                 <div class="mt-3">
                                     <div v-for="item in shipping">
                                         <div>
-                                            <input type="checkbox" style="transform: scale(1.3);">
+                                            <input type="checkbox" style="transform: scale(1.3);" checked>
                                             <span class="me-2">ارسال از طریق : </span>
                                             <strong class="text-dark">{{item.title}}</strong>
                                             <span class="float-start me-1" >تومان</span>
@@ -319,15 +338,19 @@ export default {
                                     <q-separator class="mt-3 mb-3" />
                                 </template>
                                 <div>
-                                    <span class="font-15 text-grey-8">هزینه ارسال :</span>
-                                    <strong class="float-right text-dark"></strong>
+                                    <span class="font-15 text-grey-8">مبلغ قابل پرداخت :</span>
+                                    <span class="me-1 float-right">تومان</span>
+
+                                    <strong v-if="shipping_selected" class="float-right text-green-8 font-16">
+                                        {{this.$filters.numbers(this.CartTotalPrice + shipping_selected.cost)}}
+                                    </strong>
                                 </div>
                                 <q-separator class="mt-3 mb-3" />
 
                                 <div class="text-center">
                                     <div v-if="!AuthUserCheck" class="text-danger mb-2">برای ادامه وارد حساب کاربری خود شوید</div>
                                     <q-btn v-if="this.$route.name === 'checkout_cart'" :to="{name:'checkout_shipping'}" color="green-7" class="w-100 font-16"  glossy :disable="!AuthUserCheck">ثبت سفارشات </q-btn>
-                                    <q-btn v-if="this.$route.name === 'checkout_shipping'" color="green-7" class="w-100 font-16"  glossy :disable="!AuthUserCheck">ثبت نهایی و پرداخت </q-btn>
+                                    <q-btn v-if="this.$route.name === 'checkout_shipping'" color="green-7" class="w-100 font-16"  glossy :disable="!AuthUserCheck" @click="ShoppingStart">ثبت نهایی و پرداخت </q-btn>
                                 </div>
 
                             </div>
