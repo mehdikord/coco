@@ -23,8 +23,8 @@ class ShoppingRequest extends FormRequest
     {
 
         return [
-            'address_id' => 'required|exists:user_addresses',
-            'shipping_id' => 'required|exists:shipments',
+            'address_id' => 'required|exists:user_addresses,id',
+            'shipping_id' => 'required|exists:shipments,id',
             'cart' => 'required|array',
         ];
     }

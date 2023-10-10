@@ -8,3 +8,7 @@ function response_success($result=[],$message=null): \Illuminate\Http\JsonRespon
 
     return response()->json(['result' => $result,'message' => $message]);
 }
+function response_auth_error(): \Illuminate\Http\JsonResponse
+{
+    return response()->json('Unauthorized',401);
+}

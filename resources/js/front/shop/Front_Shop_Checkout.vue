@@ -50,6 +50,7 @@ export default {
                 address:null,
             },
             errors:[],
+            shopping_loading:false,
         }
     },
     methods : {
@@ -111,14 +112,19 @@ export default {
             if (!this.shipping_selected){
                 return this.NotifyError("روش ارسال را انتخاب کنید");
             }
-
-
             let items = {
                 'address_id' : this.address_selected.id,
                 'shipping_id' : this.shipping_selected.id,
                 'cart' : this.CartItemGet
             }
-            console.log(items);
+            this.shopping_loading=true;
+            this.ShoppingUserStart(items).then(res => {
+                console.log(items)
+
+
+            })
+
+
         }
 
     },
