@@ -7,10 +7,19 @@ use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Shipment;
 use App\Models\User_Address;
+use App\Services\Payments\PaymentBitpayService;
+use function Symfony\Component\String\u;
 
 
 class ShoppingRepository implements ShoppingInterface
 {
+    protected PaymentBitpayService $bitpay;
+    public function __construct()
+    {
+        $this->bitpay = new PaymentBitpayService();
+
+    }
+
 
     public function user_start ($request)
     {
@@ -30,7 +39,7 @@ class ShoppingRepository implements ShoppingInterface
             'method' => 'online',
             'address' => $address->address,
             'postal_code' => $address->postal_code,
-
+            'gateway' => 'bitpay',
         ]);
         //get price
         $price = 0;
@@ -57,8 +66,20 @@ class ShoppingRepository implements ShoppingInterface
                 }
             }
         }
+        //check shipping cost price
+        if ($shipping->cost){
+            $price+=$shipping->cost;
+        }
         $invoice->update(['price' => $price , 'code' => core_random_code($invoice->id,12)]);
-        \DB::commit();
-        return $invoice;
+        //Send request to gateway
+        $send = $this->bitpay->start($invoice);
+        if ($send){
+            $url = $this->bitpay->make_url($send);
+            \DB::commit();
+            return response_success(['url' => $url ]);
+        }
+        return response_custom_error('مشکل در ارتباط با درگاه پرداخت');
+
     }
+
 }

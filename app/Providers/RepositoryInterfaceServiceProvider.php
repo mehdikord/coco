@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Interfaces\Auth\AuthInterface;
 use App\Interfaces\Brands\BrandsInterface;
+use App\Interfaces\Callback\CallbackInterface;
 use App\Interfaces\Categories\CategoriesInterface;
 use App\Interfaces\Faqs\FaqsInterface;
 use App\Interfaces\Helper\HelperInterface;
@@ -14,6 +15,7 @@ use App\Interfaces\Slider\SliderInterface;
 use App\Interfaces\Users\UsersInterface;
 use App\Repository\Auth\AuthRepository;
 use App\Repository\Brands\BrandsRepository;
+use App\Repository\Callback\CallbackRepository;
 use App\Repository\Categories\CategoriesRepository;
 use App\Repository\Faqs\FaqsRepository;
 use App\Repository\Helper\HelperRepository;
@@ -41,6 +43,7 @@ class RepositoryInterfaceServiceProvider extends ServiceProvider
         $this->app->bind(SliderInterface::class,SliderRepository::class);
         $this->app->bind(HelperInterface::class,HelperRepository::class);
         $this->app->bind(ShoppingInterface::class,ShoppingRepository::class);
+        $this->app->bind(CallbackInterface::class,CallbackRepository::class);
 
     }
 

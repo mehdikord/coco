@@ -37,5 +37,18 @@ Route::prefix('helper')->group(function (){
 
 });
 
+Route::prefix('system')->as('system.')->group(function (){
+
+    //Payments gateway callbacks
+    Route::prefix('payments/callback')->as('payments.callback.')->group(function (){
+
+        Route::get('bitpay',[\App\Http\Controllers\Front\System\PaymentCallbackController::class,'bitpay'])->name('bitpay');
+
+    });
+
+
+
+});
+
 
 

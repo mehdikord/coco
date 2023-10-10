@@ -51,6 +51,7 @@ export default {
             },
             errors:[],
             shopping_loading:false,
+
         }
     },
     methods : {
@@ -58,7 +59,6 @@ export default {
             "UserAddressIndex",
             "UserAddressStore",
             "ShoppingUserStart"
-
         ]),
         GetAddresses(){
             this.UserAddressIndex().then(res => {
@@ -76,6 +76,7 @@ export default {
             this.addresses_add_loading=true;
             this.UserAddressStore(this.add_address).then(res =>{
                 this.addresses.unshift(res.data.result);
+                this.addresses_add_loading=false;
                 this.DialogAddAddress=false;
                 return this.NotifySuccess(res.data.message)
             }).catch(error => {
@@ -119,7 +120,13 @@ export default {
             }
             this.shopping_loading=true;
             this.ShoppingUserStart(items).then(res => {
-                console.log(items)
+                if (res.data.result.url){
+                    window.open(res.data.result.url,'_self')
+                }
+            }).catch(error => {
+                this.shopping_loading=false;
+
+                return this.NotifyServerError();
 
 
             })
@@ -313,6 +320,7 @@ export default {
                         </div>
 
                     </div>
+
                     <div class="col-md-3 q-px-xs">
                         <div class="card">
                             <div class="card-body">
@@ -321,7 +329,7 @@ export default {
                                     <strong class="float-right text-dark">{{this.$filters.numbers(this.CartTotalPrice) }}</strong>
                                 </div>
                                 <q-separator class="mt-3 mb-3" />
-                              <template v-if="this.$route.name === 'checkout_cart'">
+                                 <template v-if="this.$route.name === 'checkout_cart'">
                                   <div>
                                       <strong class="font-14 text-dark">جمع سبد خرید</strong>
                                       <span class="float-right me-1 text-grey-7">تومان</span>
@@ -352,15 +360,26 @@ export default {
                                     </strong>
                                 </div>
                                 <q-separator class="mt-3 mb-3" />
-
                                 <div class="text-center">
                                     <div v-if="!AuthUserCheck" class="text-danger mb-2">برای ادامه وارد حساب کاربری خود شوید</div>
                                     <q-btn v-if="this.$route.name === 'checkout_cart'" :to="{name:'checkout_shipping'}" color="green-7" class="w-100 font-16"  glossy :disable="!AuthUserCheck">ثبت سفارشات </q-btn>
                                     <q-btn v-if="this.$route.name === 'checkout_shipping'" color="green-7" class="w-100 font-16"  glossy :disable="!AuthUserCheck" @click="ShoppingStart">ثبت نهایی و پرداخت </q-btn>
                                 </div>
-
                             </div>
                         </div>
+
+                        <q-dialog v-model="shopping_loading" persistent>
+                            <q-card style="width: 500px;max-width: 700px">
+                               <q-card-section>
+                                   <div class="text-center">
+                                       <q-img src="/front/images/payment-loading.svg" width="260px"></q-img>
+                                       <br>
+                                       <strong class="text-indigo">در حال اتصال به درگاه پرداخت ...</strong>
+                                   </div>
+                               </q-card-section>
+                            </q-card>
+                        </q-dialog>
+
                     </div>
 
                 </div>
