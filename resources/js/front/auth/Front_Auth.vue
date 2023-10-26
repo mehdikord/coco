@@ -91,14 +91,14 @@ export default {
             }
             let data = {phone:localStorage.getItem('coco_login_phone'),code:this.code}
             axios.post('users/auth/check',data).then(res => {
-                console.log(res.data.result);
                 this.Auth_User_Login(res.data.result)
                 localStorage.removeItem('coco_login_phone')
                 this.NotifySuccess('باموفقیت وارد حساب کاربریتان شدید');
-                if (localStorage.getItem('back_url')){
-                    return this.$router.push({name:localStorage.getItem('back_url')})
-                }
-                return this.$router.push({name:'index'})
+                let back = localStorage.getItem('back_url')
+                // if (back){
+                //     this.$router.push({name:back})
+                // }
+                this.$router.push({name:'index'})
 
             }).catch(error => {
                 if (error.response.status === 422) {
@@ -108,7 +108,6 @@ export default {
                     return this.NotifyError(error.response.data.error)
                 }
                 return this.NotifyServerError();
-
 
             })
 

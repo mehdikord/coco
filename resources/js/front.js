@@ -51,8 +51,6 @@ App.mixin({
     },
     created() {
         axios.defaults.headers.common['Authorization'] ="Bearer "+this.AuthToken
-
-
     },
     //Methods
     methods:{

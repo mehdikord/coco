@@ -7,6 +7,8 @@ import Front_Profile_Index from "../front/profile/Front_Profile_Index.vue";
 import Front_Auth from "../front/auth/Front_Auth.vue";
 import store from "../store";
 import Front_Shop_Checkout from "../front/shop/Front_Shop_Checkout.vue";
+import Front_Payment_Result_Success from "../front/payment/Front_Payment_Result_Success.vue";
+import Front_Payment_Result_Failed from "../front/payment/Front_Payment_Result_Failed.vue";
 
 const routes = [
     {
@@ -54,6 +56,19 @@ const routes = [
         name : "checkout_shipping",
         component : Front_Shop_Checkout,
     },
+    {
+        path : "/checkout/payment-result/success",
+        name : "checkout_payment_result_success",
+        component : Front_Payment_Result_Success,
+    },
+    {
+        path : "/checkout/payment-result/failed",
+        name : "checkout_payment_result_failed",
+        component : Front_Payment_Result_Failed,
+    },
+
+
+
 
 ]
 

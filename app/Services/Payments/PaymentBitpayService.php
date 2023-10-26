@@ -79,5 +79,21 @@ class PaymentBitpayService {
         return $url;
     }
 
+    public function verify($trans_id,$id_get)
+    {
+        $data = [
+            'api' => $this->api,
+            'trans_id' => $trans_id,
+            'id_get' => $id_get,
+            'json' => 1,
+        ];
+        $client = new Client();
+        $send = $client->post($this->verify,[
+            'form_params' => $data
+        ]);
+        return $send->getBody();
+
+    }
+
 
 }
